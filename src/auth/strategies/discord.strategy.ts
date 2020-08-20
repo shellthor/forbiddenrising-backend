@@ -1,14 +1,14 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-discord';
-import { User } from 'src/user/user.entity';
-import { AuthService, DiscordProfile } from '../auth.service';
-import { BlizzardStrategy } from './blizzard.strategy';
+import { Injectable, Logger } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { PassportStrategy } from '@nestjs/passport'
+import { Strategy } from 'passport-discord'
+import { User } from 'src/user/user.entity'
+import { AuthService, DiscordProfile } from '../auth.service'
+import { BlizzardStrategy } from './blizzard.strategy'
 
 @Injectable()
 export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
-  private readonly logger: Logger = new Logger(BlizzardStrategy.name);
+  private readonly logger: Logger = new Logger(BlizzardStrategy.name)
 
   constructor(private readonly authService: AuthService, config: ConfigService) {
     super({
@@ -16,7 +16,7 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
       clientSecret: config.get('DISCORD_SECRET'),
       callbackURL: config.get('DISCORD_CALLBACK'),
       scope: ['identify'],
-    });
+    })
   }
 
   async validate(
@@ -24,6 +24,6 @@ export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
     refreshToken: string,
     profile: DiscordProfile,
   ): Promise<User> {
-    return this.authService.validateDiscordLogin(accessToken, refreshToken, profile);
+    return this.authService.validateDiscordLogin(accessToken, refreshToken, profile)
   }
 }

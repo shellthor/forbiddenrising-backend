@@ -1,4 +1,4 @@
-import { IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator'
 
 export enum RaiderIOCharacterFields {
   GEAR = 'gear',
@@ -27,5 +27,5 @@ export class RaiderIOCharacterFieldsDto {
     RaiderIOCharacterFields.MYTHIC_PLUS_SCORES_BY_PREVIOUS_SEASON,
     RaiderIOCharacterFields.MYTHIC_PLUS_RECENT_RUNS,
     RaiderIOCharacterFields.MYTHIC_PLUS_BEST_RUNS,
-  ];
+  ]
 }

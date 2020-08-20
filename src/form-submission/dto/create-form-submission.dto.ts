@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Type } from 'class-transformer'
 import {
   ArrayMaxSize,
   IsArray,
@@ -7,27 +7,27 @@ import {
   IsNumber,
   IsOptional,
   ValidateNested,
-} from 'class-validator';
-import { FindCharacterDto } from '../../blizzard/dto/find-character.dto';
+} from 'class-validator'
+import { FindCharacterDto } from '../../blizzard/dto/find-character.dto'
 
 export interface Answers {
-  [id: string]: string | string[];
+  [id: string]: string | string[]
 }
 
 export class CreateFormSubmissionDto {
   @IsNumber()
-  readonly formId: number;
+  readonly formId: number
 
   @IsNotEmpty()
-  readonly answers: Answers;
+  readonly answers: Answers
 
   @IsOptional()
   @IsArray()
   @ArrayMaxSize(5)
-  readonly files?: number[];
+  readonly files?: number[]
 
   @IsDefined()
   @ValidateNested({ each: true })
   @Type(() => FindCharacterDto)
-  readonly characters: FindCharacterDto[];
+  readonly characters: FindCharacterDto[]
 }

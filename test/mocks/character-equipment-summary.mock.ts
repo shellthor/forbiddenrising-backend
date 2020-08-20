@@ -1,4 +1,4 @@
-import { CharacterEquipmentSummary } from '../../src/blizzard/interfaces/profile/character-equipment/character-equipment-summary.interface';
+import { CharacterEquipmentSummary } from '../../src/blizzard/interfaces/profile/character-equipment/character-equipment-summary.interface'
 
 const CharacterEquipmentSummaryMock = (id: number, name: string): CharacterEquipmentSummary => ({
   _links: {
@@ -3732,6 +3732,6 @@ const CharacterEquipmentSummaryMock = (id: number, name: string): CharacterEquip
       display_string: 'Waycrest Legacy (1/2)',
     },
   ],
-});
+})
 
-export default CharacterEquipmentSummaryMock;
+export default CharacterEquipmentSummaryMock

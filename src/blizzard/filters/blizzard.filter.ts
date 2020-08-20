@@ -1,5 +1,5 @@
-import { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
-import { AxiosError } from 'axios';
+import { ArgumentsHost, ExceptionFilter } from '@nestjs/common'
+import { AxiosError } from 'axios'
 
 /**
  * Exceptions thrown by Blizzard can be proxied through our requests.
@@ -7,8 +7,8 @@ import { AxiosError } from 'axios';
 
 export class BlizzardFilter implements ExceptionFilter {
   catch(exception: AxiosError, host: ArgumentsHost): Response {
-    const ctx = host.switchToHttp();
-    const response = ctx.getResponse();
+    const ctx = host.switchToHttp()
+    const response = ctx.getResponse()
 
     if (
       exception.config &&
@@ -21,9 +21,9 @@ export class BlizzardFilter implements ExceptionFilter {
         timestamp: new Date().toISOString(),
         path: exception.config.url,
         data: exception.response.data,
-      });
+      })
     }
 
-    throw exception;
+    throw exception
   }
 }

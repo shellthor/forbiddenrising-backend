@@ -1,22 +1,22 @@
-import { Character, Guild, KeyNameId, Links } from '../shared-profile.interface';
+import { Character, Guild, KeyNameId, Links } from '../shared-profile.interface'
 
 export interface GuildActivity {
-  _links: Links;
-  guild: Guild;
-  activities: Activity;
+  _links: Links
+  guild: Guild
+  activities: Activity
 }
 
 export interface Activity {
-  type: ActivityType;
-  character_achievement: CharacterAchievement;
+  type: ActivityType
+  character_achievement: CharacterAchievement
 }
 
 export interface ActivityType {
-  tyoe: string;
+  tyoe: string
 }
 
 export interface CharacterAchievement {
-  character: Character;
-  achievement: KeyNameId;
-  timestamp: number;
+  character: Character
+  achievement: KeyNameId
+  timestamp: number
 }

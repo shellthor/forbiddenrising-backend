@@ -1,6 +1,6 @@
-import { EntityManager, FilterQuery, QueryOrderMap } from '@mikro-orm/core';
-import { EntityRepository } from '@mikro-orm/knex';
-import { InjectQueue } from '@nestjs/bull';
+import { EntityManager, FilterQuery, QueryOrderMap } from '@mikro-orm/core'
+import { EntityRepository } from '@mikro-orm/knex'
+import { InjectQueue } from '@nestjs/bull'
 import {
   BadRequestException,
   ForbiddenException,
@@ -8,22 +8,22 @@ import {
   Logger,
   OnModuleInit,
   UnauthorizedException,
-} from '@nestjs/common';
-import { Queue } from 'bull';
-import fs from 'fs';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import path from 'path';
-import { FileService } from '../file/file.service';
-import { FormCharacterService } from '../form-character/form-character.service';
-import { Form } from '../form/form.entity';
-import { User } from '../user/user.entity';
-import { CreateFormSubmissionDto, UpdateFormSubmissionDto } from './dto';
-import { FormSubmissionStatus } from './enums/form-submission-status.enum';
-import { FormSubmission } from './form-submission.entity';
+} from '@nestjs/common'
+import { Queue } from 'bull'
+import fs from 'fs'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import path from 'path'
+import { FileService } from '../file/file.service'
+import { FormCharacterService } from '../form-character/form-character.service'
+import { Form } from '../form/form.entity'
+import { User } from '../user/user.entity'
+import { CreateFormSubmissionDto, UpdateFormSubmissionDto } from './dto'
+import { FormSubmissionStatus } from './enums/form-submission-status.enum'
+import { FormSubmission } from './form-submission.entity'
 
 @Injectable()
 export class SubmissionService implements OnModuleInit {
-  private readonly logger = new Logger(SubmissionService.name);
+  private readonly logger = new Logger(SubmissionService.name)
 
   constructor(
     @InjectRepository(FormSubmission)
@@ -36,17 +36,17 @@ export class SubmissionService implements OnModuleInit {
   ) {}
 
   onModuleInit(): void {
-    const uploadPath = path.join(process.cwd(), 'uploads', 'applications');
+    const uploadPath = path.join(process.cwd(), 'uploads', 'applications')
 
     fs.access(uploadPath, error => {
       if (error) {
-        this.logger.log(`Creating upload directory: ${uploadPath}`);
+        this.logger.log(`Creating upload directory: ${uploadPath}`)
 
         fs.mkdir(uploadPath, { recursive: true }, error => {
-          if (error) throw error;
-        });
+          if (error) throw error
+        })
       }
-    });
+    })
   }
 
   /**
@@ -59,7 +59,7 @@ export class SubmissionService implements OnModuleInit {
     author: User,
     { formId, answers, files, characters }: CreateFormSubmissionDto,
   ): Promise<FormSubmission> {
-    const formSubmission = new FormSubmission();
+    const formSubmission = new FormSubmission()
 
     const openForm = await this.formSubmissionRepository.find(
       {
@@ -67,51 +67,51 @@ export class SubmissionService implements OnModuleInit {
         author: { id: author.id },
       },
       ['author'],
-    );
+    )
 
     if (openForm.length) {
       throw new BadRequestException(
         'You already have an open form. Please wait for your other application to be processed or cancel it.',
-      );
+      )
     }
 
     if (files && files.length) {
-      const fileUploads = await this.fileService.find(files);
+      const fileUploads = await this.fileService.find(files)
 
       for (const upload of fileUploads) {
         if (upload.author && upload.author.id !== author.id) {
-          throw new UnauthorizedException('Cannot link unauthored file');
+          throw new UnauthorizedException('Cannot link unauthored file')
         }
       }
 
-      formSubmission.files.set(fileUploads);
+      formSubmission.files.set(fileUploads)
     }
 
     const formCharacters = await Promise.all(
       characters.map(character => this.formCharacterService.upsert(character)),
-    );
+    )
 
-    formSubmission.form = this.em.getReference(Form, formId);
-    formSubmission.author = author;
-    formSubmission.characters.set(formCharacters);
-    formSubmission.mainCharacter = formCharacters[0];
-    formSubmission.answers = answers;
+    formSubmission.form = this.em.getReference(Form, formId)
+    formSubmission.author = author
+    formSubmission.characters.set(formCharacters)
+    formSubmission.mainCharacter = formCharacters[0]
+    formSubmission.answers = answers
 
-    await this.formSubmissionRepository.persistAndFlush(formSubmission);
+    await this.formSubmissionRepository.persistAndFlush(formSubmission)
 
     // When not using the populate API, this needs to be manually set.
-    formSubmission.author.populated();
-    formSubmission.characters.populated();
-    formSubmission.justSubmitted = true;
+    formSubmission.author.populated()
+    formSubmission.characters.populated()
+    formSubmission.justSubmitted = true
 
     // Send notifications.
-    await this.formQueue.add('new-application', formSubmission);
+    await this.formQueue.add('new-application', formSubmission)
     await this.discordQueue.add('app-create-notification', formSubmission, {
       attempts: 1,
       removeOnFail: true,
-    });
+    })
 
-    return formSubmission;
+    return formSubmission
   }
 
   /**
@@ -125,7 +125,7 @@ export class SubmissionService implements OnModuleInit {
     populate?: boolean | string[],
     orderBy?: QueryOrderMap,
   ): Promise<FormSubmission> {
-    return this.formSubmissionRepository.findOne(where, populate, orderBy);
+    return this.formSubmissionRepository.findOne(where, populate, orderBy)
   }
 
   /**
@@ -140,7 +140,7 @@ export class SubmissionService implements OnModuleInit {
     populate?: boolean | string[],
     orderBy?: QueryOrderMap,
   ): Promise<FormSubmission> {
-    return this.formSubmissionRepository.findOneOrFail(where, populate, orderBy);
+    return this.formSubmissionRepository.findOneOrFail(where, populate, orderBy)
   }
 
   /**
@@ -157,7 +157,7 @@ export class SubmissionService implements OnModuleInit {
     limit?: number,
     offset?: number,
   ): Promise<[FormSubmission[], number]> {
-    return this.formSubmissionRepository.findAndCount(where, populate, orderBy, limit, offset);
+    return this.formSubmissionRepository.findAndCount(where, populate, orderBy, limit, offset)
   }
 
   /**
@@ -172,10 +172,10 @@ export class SubmissionService implements OnModuleInit {
     updateFormSubmissionDto: UpdateFormSubmissionDto,
     updateAny: boolean,
   ): Promise<FormSubmission> {
-    const formSubmission = await this.formSubmissionRepository.findOneOrFail(id, ['author']);
+    const formSubmission = await this.formSubmissionRepository.findOneOrFail(id, ['author'])
 
     if (!updateAny && formSubmission.author.id !== user.id) {
-      throw new ForbiddenException();
+      throw new ForbiddenException()
     }
 
     // Only officers can change the status of applications to anything other than cancelled.
@@ -184,23 +184,23 @@ export class SubmissionService implements OnModuleInit {
       updateFormSubmissionDto.status &&
       updateFormSubmissionDto.status !== FormSubmissionStatus.Cancelled
     ) {
-      throw new ForbiddenException();
+      throw new ForbiddenException()
     }
 
     const statusChange =
       updateFormSubmissionDto.status &&
       updateFormSubmissionDto.status !== 'open' &&
-      formSubmission.status !== updateFormSubmissionDto.status;
+      formSubmission.status !== updateFormSubmissionDto.status
 
-    formSubmission.assign(updateFormSubmissionDto);
+    formSubmission.assign(updateFormSubmissionDto)
 
-    await this.formSubmissionRepository.flush();
+    await this.formSubmissionRepository.flush()
 
     if (statusChange) {
-      await this.discordQueue.add('app-status-notification', formSubmission);
+      await this.discordQueue.add('app-status-notification', formSubmission)
     }
 
-    return formSubmission;
+    return formSubmission
   }
 
   /**
@@ -209,12 +209,12 @@ export class SubmissionService implements OnModuleInit {
    * @param id id of the submission
    */
   async delete(id: number): Promise<FormSubmission> {
-    const submission = await this.formSubmissionRepository.findOneOrFail(id, ['characters']);
+    const submission = await this.formSubmissionRepository.findOneOrFail(id, ['characters'])
 
-    this.formSubmissionRepository.remove(submission);
+    this.formSubmissionRepository.remove(submission)
 
-    await this.formSubmissionRepository.flush();
+    await this.formSubmissionRepository.flush()
 
-    return submission;
+    return submission
   }
 }

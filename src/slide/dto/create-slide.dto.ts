@@ -1,15 +1,15 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator'
 
 export class CreateSlideDto {
   @IsNotEmpty()
-  readonly image: string;
+  readonly image: string
 
   @IsNotEmpty()
-  readonly title: string;
+  readonly title: string
 
   @IsOptional()
-  readonly subtitle?: string;
+  readonly subtitle?: string
 
   @IsOptional()
-  readonly link?: string;
+  readonly link?: string
 }

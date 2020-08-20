@@ -1,6 +1,6 @@
-import { HttpModule, Module } from '@nestjs/common';
-import { RaidModule } from '../raid/raid.module';
-import { RaiderIOService } from './raiderIO.service';
+import { HttpModule, Module } from '@nestjs/common'
+import { RaidModule } from '../raid/raid.module'
+import { RaiderIOService } from './raiderIO.service'
 
 @Module({
   imports: [HttpModule, RaidModule],

@@ -1,4 +1,4 @@
-import { QueryOrder } from '@mikro-orm/core';
+import { QueryOrder } from '@mikro-orm/core'
 import {
   Body,
   Controller,
@@ -11,27 +11,27 @@ import {
   UploadedFiles,
   UseInterceptors,
   UsePipes,
-} from '@nestjs/common';
-import { AnyFilesInterceptor } from '@nestjs/platform-express';
-import { AccessControl } from 'accesscontrol';
-import multer from 'multer';
-import { FileUpload } from 'src/file/file.entity';
-import { Auth } from '../auth/decorators/auth.decorator';
-import { InjectAccessControl } from '../auth/decorators/inject-access-control.decorator';
-import { FileService } from '../file/file.service';
-import { Usr } from '../user/user.decorator';
-import { User } from '../user/user.entity';
+} from '@nestjs/common'
+import { AnyFilesInterceptor } from '@nestjs/platform-express'
+import { AccessControl } from 'accesscontrol'
+import multer from 'multer'
+import { FileUpload } from 'src/file/file.entity'
+import { Auth } from '../auth/decorators/auth.decorator'
+import { InjectAccessControl } from '../auth/decorators/inject-access-control.decorator'
+import { FileService } from '../file/file.service'
+import { Usr } from '../user/user.decorator'
+import { User } from '../user/user.entity'
 import {
   CreateFormSubmissionDto,
   FindAllFormSubmissionsDto,
   FindFormSubmissionByStatusDto,
   FindFormSubmissionDto,
   UpdateFormSubmissionDto,
-} from './dto';
-import { FormSubmissionStatus } from './enums/form-submission-status.enum';
-import { FormSubmission } from './form-submission.entity';
-import { SubmissionService } from './form-submission.service';
-import { CreateSubmissionPipe } from './pipes/create-submission.pipe';
+} from './dto'
+import { FormSubmissionStatus } from './enums/form-submission-status.enum'
+import { FormSubmission } from './form-submission.entity'
+import { SubmissionService } from './form-submission.service'
+import { CreateSubmissionPipe } from './pipes/create-submission.pipe'
 
 @Controller('submission')
 export class SubmissionController {
@@ -48,7 +48,7 @@ export class SubmissionController {
     @Usr() user: User,
     @Body() createSubmissionDto: CreateFormSubmissionDto,
   ): Promise<FormSubmission> {
-    return this.submissionService.create(user, createSubmissionDto);
+    return this.submissionService.create(user, createSubmissionDto)
   }
 
   @Auth()
@@ -57,10 +57,10 @@ export class SubmissionController {
     AnyFilesInterceptor({
       storage: multer.diskStorage({
         destination: function (req, file, cb) {
-          cb(null, 'uploads/applications/');
+          cb(null, 'uploads/applications/')
         },
         filename: function (req, file, cb) {
-          cb(null, Date.now() + '-' + file.originalname);
+          cb(null, Date.now() + '-' + file.originalname)
         },
       }),
     }),
@@ -70,21 +70,21 @@ export class SubmissionController {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     @UploadedFiles() files: any,
   ): Promise<FileUpload[]> {
-    return this.fileService.create(files, user);
+    return this.fileService.create(files, user)
   }
 
   @Auth()
   @Delete('file/:id')
   deleteFile(@Usr() user: User, @Param('id') id: number): Promise<FileUpload> {
-    const canDeleteAny = this.ac.can(user.roles).deleteAny('file-upload').granted;
+    const canDeleteAny = this.ac.can(user.roles).deleteAny('file-upload').granted
 
-    return this.fileService.delete(id, canDeleteAny ? undefined : user);
+    return this.fileService.delete(id, canDeleteAny ? undefined : user)
   }
 
   @Auth()
   @Get('/user')
   findByUser(@Usr() user: User): Promise<[FormSubmission[], number]> {
-    return this.submissionService.findAll({ author: { id: user.id } });
+    return this.submissionService.findAll({ author: { id: user.id } })
   }
 
   @Auth()
@@ -93,19 +93,19 @@ export class SubmissionController {
     return this.submissionService.findAll({
       author: { id: user.id },
       status: FormSubmissionStatus.Open,
-    });
+    })
   }
 
   @Get('/status/:status')
   findFirstByStatus(@Param() { status }: FindFormSubmissionByStatusDto): Promise<FormSubmission> {
     return this.submissionService.findOneOrFail({ status }, ['form', 'author', 'characters'], {
       id: QueryOrder.DESC,
-    });
+    })
   }
 
   @Get(':id')
   findOne(@Param() { id }: FindFormSubmissionDto): Promise<FormSubmission> {
-    return this.submissionService.findOneOrFail(id, true);
+    return this.submissionService.findOneOrFail(id, true)
   }
 
   @Get()
@@ -118,7 +118,7 @@ export class SubmissionController {
       { id: QueryOrder.DESC },
       limit,
       offset,
-    );
+    )
   }
 
   @Auth()
@@ -128,14 +128,14 @@ export class SubmissionController {
     @Usr() user: User,
     @Body() updateFormSubmissionDto: UpdateFormSubmissionDto,
   ): Promise<FormSubmission> {
-    const canUpdateAny = this.ac.can(user.roles).updateAny('form-submission').granted;
+    const canUpdateAny = this.ac.can(user.roles).updateAny('form-submission').granted
 
-    return this.submissionService.update(id, user, updateFormSubmissionDto, canUpdateAny);
+    return this.submissionService.update(id, user, updateFormSubmissionDto, canUpdateAny)
   }
 
   @Auth('form-submission', 'delete:any')
   @Delete(':id')
   delete(@Param() { id }: FindFormSubmissionDto): Promise<FormSubmission> {
-    return this.submissionService.delete(id);
+    return this.submissionService.delete(id)
   }
 }

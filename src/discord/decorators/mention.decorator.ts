@@ -1,13 +1,13 @@
-import { DISCORD_COMMAND_ARGS } from '../../app.constants';
+import { DISCORD_COMMAND_ARGS } from '../../app.constants'
 
 export interface MentionMeta {
-  mentions: MentionData[];
+  mentions: MentionData[]
 }
 
 export interface MentionData {
-  paramtype: CommandParamtypes;
-  index: number;
-  property?: string;
+  paramtype: CommandParamtypes
+  index: number
+  property?: string
 }
 
 export enum CommandParamtypes {
@@ -23,22 +23,22 @@ export enum CommandParamtypes {
  */
 export const RoleMention: (property?: string) => ParameterDecorator = createCommandParamDecorator(
   CommandParamtypes.ROLE,
-);
+)
 
 export const UserMention: (property?: string) => ParameterDecorator = createCommandParamDecorator(
   CommandParamtypes.MEMBER,
-);
+)
 
 export const ChannelMention: (
   property?: string,
-) => ParameterDecorator = createCommandParamDecorator(CommandParamtypes.CHANNEL);
+) => ParameterDecorator = createCommandParamDecorator(CommandParamtypes.CHANNEL)
 
 function createCommandParamDecorator(paramtype: CommandParamtypes) {
   return (property?: string): ParameterDecorator => (target, key, index) => {
-    const metadata = Reflect.getOwnMetadata(DISCORD_COMMAND_ARGS, target, key) || [];
+    const metadata = Reflect.getOwnMetadata(DISCORD_COMMAND_ARGS, target, key) || []
 
-    metadata.push({ paramtype, index, property });
+    metadata.push({ paramtype, index, property })
 
-    Reflect.defineMetadata(DISCORD_COMMAND_ARGS, metadata, target, key);
-  };
+    Reflect.defineMetadata(DISCORD_COMMAND_ARGS, metadata, target, key)
+  }
 }

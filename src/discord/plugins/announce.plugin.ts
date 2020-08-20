@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { Plugin, Command, CommandGroup } from '../discord.decorators';
-import { DiscordPlugin } from './plugin.class';
-import { Context } from '../discord.context';
-import { MessageEmbed } from 'discord.js';
+import { Injectable } from '@nestjs/common'
+import { Plugin, Command, CommandGroup } from '../discord.decorators'
+import { DiscordPlugin } from './plugin.class'
+import { Context } from '../discord.context'
+import { MessageEmbed } from 'discord.js'
 
 @Injectable()
 @Plugin('Announcements')
@@ -41,9 +41,9 @@ export class AnnouncePlugin extends DiscordPlugin {
           inline: true,
         },
       ],
-    });
+    })
 
-    await ctx.send(embed);
+    await ctx.send(embed)
   }
 
   @Command({
@@ -57,8 +57,8 @@ export class AnnouncePlugin extends DiscordPlugin {
       description:
         'If you wish to represent your class on Discord, feel free to use this to override the default role colors.',
       color: 0xff28b3,
-    });
+    })
 
-    await ctx.send(embed);
+    await ctx.send(embed)
   }
 }

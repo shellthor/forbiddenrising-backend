@@ -6,14 +6,14 @@ export type Permission =
   | 'update:own'
   | 'update:any'
   | 'delete:own'
-  | 'delete:any';
+  | 'delete:any'
 
 export interface Grant {
-  resourse: string;
-  permissions: Permission | Permission[];
+  resourse: string
+  permissions: Permission | Permission[]
 }
 
 export interface GrantMetadata {
-  resource: string;
-  permissions: Permission[];
+  resource: string
+  permissions: Permission[]
 }

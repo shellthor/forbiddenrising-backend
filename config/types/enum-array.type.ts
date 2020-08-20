@@ -1,21 +1,21 @@
-import { Type, ValidationError } from '@mikro-orm/core';
+import { Type, ValidationError } from '@mikro-orm/core'
 
 export class EnumArray extends Type {
   convertToDatabaseValue(value: any): string {
-    if (value === null) return value;
+    if (value === null) return value
 
     if (value.length) {
-      return `{${value.join(',')}}`;
+      return `{${value.join(',')}}`
     }
 
-    throw ValidationError.invalidType(EnumArray, value, 'JS');
+    throw ValidationError.invalidType(EnumArray, value, 'JS')
   }
 
   toJSON(value: any) {
-    return value;
+    return value
   }
 
   getColumnType() {
-    return 'text[]';
+    return 'text[]'
   }
 }

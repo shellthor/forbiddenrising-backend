@@ -1,5 +1,5 @@
 export class FindAllDto {
-  take?: number;
+  take?: number
 
-  skip?: number;
+  skip?: number
 }

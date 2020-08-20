@@ -1,4 +1,4 @@
-import { Type } from '@mikro-orm/core';
+import { Type } from '@mikro-orm/core'
 
 /**
  * Decimal type for PostgreSQL in MikroORM.
@@ -8,14 +8,14 @@ import { Type } from '@mikro-orm/core';
 
 export class DecimalType extends Type {
   convertToDatabaseValue(value: any) {
-    return value;
+    return value
   }
 
   toJSON(value: any) {
-    return value;
+    return value
   }
 
   getColumnType() {
-    return 'decimal';
+    return 'decimal'
   }
 }

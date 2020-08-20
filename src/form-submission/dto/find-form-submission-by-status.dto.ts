@@ -1,7 +1,7 @@
-import { IsEnum } from 'class-validator';
-import { FormSubmissionStatus } from '../enums/form-submission-status.enum';
+import { IsEnum } from 'class-validator'
+import { FormSubmissionStatus } from '../enums/form-submission-status.enum'
 
 export class FindFormSubmissionByStatusDto {
   @IsEnum(FormSubmissionStatus)
-  readonly status!: FormSubmissionStatus;
+  readonly status!: FormSubmissionStatus
 }

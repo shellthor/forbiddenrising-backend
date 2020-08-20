@@ -1,10 +1,10 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { CharacterProfileSummary, GuildRoster } from 'src/blizzard/interfaces/profile';
-import { Auth } from '../../../auth/decorators/auth.decorator';
-import { FindCharacterDto } from '../../dto/find-character.dto';
-import { FindGuildDto } from '../../dto/find-guild.dto';
-import { BattleNetService } from '../battle-net/battle-net.service';
-import { ProfileService } from './profile.service';
+import { Controller, Get, Param } from '@nestjs/common'
+import { CharacterProfileSummary, GuildRoster } from 'src/blizzard/interfaces/profile'
+import { Auth } from '../../../auth/decorators/auth.decorator'
+import { FindCharacterDto } from '../../dto/find-character.dto'
+import { FindGuildDto } from '../../dto/find-guild.dto'
+import { BattleNetService } from '../battle-net/battle-net.service'
+import { ProfileService } from './profile.service'
 
 @Controller('blizzard')
 export class ProfileController {
@@ -28,12 +28,12 @@ export class ProfileController {
   async getCharacter(
     @Param() findCharacterDto: FindCharacterDto,
   ): Promise<CharacterProfileSummary> {
-    return (await this.profileService.getCharacterProfileSummary(findCharacterDto)).data;
+    return (await this.profileService.getCharacterProfileSummary(findCharacterDto)).data
   }
 
   @Auth()
   @Get('guild/:region/:realm/:name')
   async getGuild(@Param() findGuildDto: FindGuildDto): Promise<GuildRoster> {
-    return (await this.profileService.getGuildRoster(findGuildDto)).data;
+    return (await this.profileService.getGuildRoster(findGuildDto)).data
   }
 }

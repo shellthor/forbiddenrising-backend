@@ -1,34 +1,34 @@
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
-import { FormSubmission } from '../form-submission/form-submission.entity';
-import { User } from '../user/user.entity';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
+import { FormSubmission } from '../form-submission/form-submission.entity'
+import { User } from '../user/user.entity'
 
 @Entity()
 export class FileUpload {
   @PrimaryKey()
-  id!: number;
+  id!: number
 
   @Property()
-  filename!: string;
+  filename!: string
 
   @Property()
-  path!: string;
+  path!: string
 
   @Property()
-  mimetype!: string;
+  mimetype!: string
 
   @Property()
-  size!: number;
+  size!: number
 
   @Property()
-  immune = false;
+  immune = false
 
   /**
    * Relationships
    */
 
   @ManyToOne(() => User)
-  author: User;
+  author: User
 
   @ManyToOne(() => FormSubmission, { nullable: true })
-  submission?: FormSubmission;
+  submission?: FormSubmission
 }

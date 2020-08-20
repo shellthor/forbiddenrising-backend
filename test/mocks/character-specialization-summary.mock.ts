@@ -1,4 +1,4 @@
-import { CharacterSpecializationsSummary } from '../../src/blizzard/interfaces/profile/character-specializations/character-specializations-summary.interface';
+import { CharacterSpecializationsSummary } from '../../src/blizzard/interfaces/profile/character-specializations/character-specializations-summary.interface'
 
 const CharacterSpecializationsSummaryMock = (
   id: number,
@@ -935,6 +935,6 @@ const CharacterSpecializationsSummaryMock = (
       slug: 'area-52',
     },
   },
-});
+})
 
-export default CharacterSpecializationsSummaryMock;
+export default CharacterSpecializationsSummaryMock

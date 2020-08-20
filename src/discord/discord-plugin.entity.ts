@@ -1,13 +1,13 @@
-import { BaseEntity, Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { BaseEntity, Entity, PrimaryKey, Property } from '@mikro-orm/core'
 
 @Entity()
 export class DiscordConfig extends BaseEntity<DiscordConfig, 'id'> {
   @PrimaryKey()
-  id!: number;
+  id!: number
 
   @Property({ unique: true })
-  name!: string;
+  name!: string
 
   @Property({ type: 'json' })
-  options: any;
+  options: any
 }

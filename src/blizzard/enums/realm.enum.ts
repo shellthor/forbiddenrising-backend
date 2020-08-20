@@ -247,9 +247,9 @@ export enum RealmName {
   Saurfang = 'Saurfang',
 }
 
-export type RealmSlugString = RealmSlug[keyof RealmSlug] & string;
+export type RealmSlugString = RealmSlug[keyof RealmSlug] & string
 
-export type RealmType = RealmSlug | RealmSlugString;
+export type RealmType = RealmSlug | RealmSlugString
 
 export enum RealmSlug {
   Lightbringer = 'lightbringer',

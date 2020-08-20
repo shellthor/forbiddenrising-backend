@@ -1,5 +1,5 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
-import { FormQuestion } from '../question.entity';
+import { HttpException, HttpStatus } from '@nestjs/common'
+import { FormQuestion } from '../question.entity'
 
 export class InvalidQuestionException extends HttpException {
   constructor(
@@ -17,6 +17,6 @@ export class InvalidQuestionException extends HttpException {
         HttpStatus.BAD_REQUEST,
       ),
       HttpStatus.BAD_REQUEST,
-    );
+    )
   }
 }

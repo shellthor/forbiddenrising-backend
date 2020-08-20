@@ -1,42 +1,42 @@
-import { IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator'
 
 export class UpdateRaidDto {
   @IsOptional()
-  name: string;
+  name: string
 
   @IsOptional()
-  slug: string;
+  slug: string
 
   @IsOptional()
-  background: string;
+  background: string
 
   @IsOptional()
-  progress: number;
+  progress: number
 
   @IsOptional()
-  difficulty: string;
+  difficulty: string
 
   @IsOptional()
-  world: number;
+  world: number
 
   @IsOptional()
-  region: number;
+  region: number
 
   @IsOptional()
-  realm: number;
+  realm: number
 
   @IsOptional()
-  summary: string;
+  summary: string
 
   @IsOptional()
-  total_bosses: number;
+  total_bosses: number
 
   @IsOptional()
-  normal_bosses_killed: number;
+  normal_bosses_killed: number
 
   @IsOptional()
-  heroic_bosses_killed: number;
+  heroic_bosses_killed: number
 
   @IsOptional()
-  mythic_bosses_killed: number;
+  mythic_bosses_killed: number
 }

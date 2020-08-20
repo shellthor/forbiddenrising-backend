@@ -1,4 +1,4 @@
-import { CharacterRaids } from '../../src/blizzard/interfaces/profile/character-encounters/character-raids.interface';
+import { CharacterRaids } from '../../src/blizzard/interfaces/profile/character-encounters/character-raids.interface'
 
 const CharacterRaidsMock = (id: number, name: string): CharacterRaids => ({
   _links: {
@@ -10984,6 +10984,6 @@ const CharacterRaidsMock = (id: number, name: string): CharacterRaids => ({
       ],
     },
   ],
-});
+})
 
-export default CharacterRaidsMock;
+export default CharacterRaidsMock

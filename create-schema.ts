@@ -1,8 +1,8 @@
-import { MikroORM } from '@mikro-orm/core';
-import config from './mikro-orm.config';
-(async () => {
-  const orm = await MikroORM.init(config);
-  const generator = orm.getSchemaGenerator();
+import { MikroORM } from '@mikro-orm/core'
+import config from './mikro-orm.config'
+;(async () => {
+  const orm = await MikroORM.init(config)
+  const generator = orm.getSchemaGenerator()
 
   // const dropDump = generator.getDropSchemaSQL();
   // console.log(dropDump);
@@ -16,12 +16,12 @@ import config from './mikro-orm.config';
   // const dropAndCreateDump = await generator.generate();
   // console.log(dropAndCreateDump);
 
-  await generator.dropSchema();
-  console.log('dropped schema');
-  await generator.createSchema();
-  console.log('created schema');
-  await generator.updateSchema();
-  console.log('updated schema');
+  await generator.dropSchema()
+  console.log('dropped schema')
+  await generator.createSchema()
+  console.log('created schema')
+  await generator.updateSchema()
+  console.log('updated schema')
 
-  await orm.close(true);
-})();
+  await orm.close(true)
+})()

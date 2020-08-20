@@ -1,11 +1,11 @@
-import { EntityRepository, FilterQuery, QueryOrder, QueryOrderMap } from '@mikro-orm/core';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import slugify from 'slugify';
-import { User } from '../user/user.entity';
-import { Article } from './article.entity';
-import { CreateArticleDTO } from './dto/create-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
+import { EntityRepository, FilterQuery, QueryOrder, QueryOrderMap } from '@mikro-orm/core'
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import slugify from 'slugify'
+import { User } from '../user/user.entity'
+import { Article } from './article.entity'
+import { CreateArticleDTO } from './dto/create-article.dto'
+import { UpdateArticleDto } from './dto/update-article.dto'
 
 @Injectable()
 export class ArticleService {
@@ -21,17 +21,17 @@ export class ArticleService {
    * @param createArticleDto article properties
    */
   public async create(user: User, createArticleDto: CreateArticleDTO): Promise<Article> {
-    const article = this.articleRepository.create(createArticleDto);
+    const article = this.articleRepository.create(createArticleDto)
 
     article.slug = slugify(createArticleDto.title, {
       lower: true,
       remove: /[*+~.()'"!:@]/g,
-    });
-    article.author = user;
+    })
+    article.author = user
 
-    await this.articleRepository.persistAndFlush(article);
+    await this.articleRepository.persistAndFlush(article)
 
-    return article;
+    return article
   }
 
   /**
@@ -49,7 +49,7 @@ export class ArticleService {
         limit,
         offset,
       },
-    );
+    )
   }
 
   /**
@@ -61,7 +61,7 @@ export class ArticleService {
     id: number,
     populate?: boolean | string[],
     orderBy?: QueryOrderMap,
-  ): Promise<Article>;
+  ): Promise<Article>
 
   /**
    * Retrieves an article by its slug or fails.
@@ -72,7 +72,7 @@ export class ArticleService {
     slug: string,
     populate?: boolean | string[],
     orderBy?: QueryOrderMap,
-  ): Promise<Article>;
+  ): Promise<Article>
 
   /**
    * Retrieves an article using a query object or fails.
@@ -85,7 +85,7 @@ export class ArticleService {
     where: FilterQuery<Article>,
     populate?: boolean | string[],
     orderBy?: QueryOrderMap,
-  ): Promise<Article>;
+  ): Promise<Article>
 
   public findOneOrFail(
     param: number | string | FilterQuery<Article>,
@@ -97,9 +97,9 @@ export class ArticleService {
         ? { id: param }
         : typeof param === 'string'
         ? { slug: param }
-        : param;
+        : param
 
-    return this.articleRepository.findOneOrFail(where, populate, orderBy);
+    return this.articleRepository.findOneOrFail(where, populate, orderBy)
   }
 
   /**
@@ -109,13 +109,13 @@ export class ArticleService {
    * @param updateArticleDto properties to update
    */
   async update(id: number, updateArticleDto: UpdateArticleDto): Promise<Article> {
-    const article = await this.articleRepository.findOneOrFail(id);
+    const article = await this.articleRepository.findOneOrFail(id)
 
-    article.assign(updateArticleDto);
+    article.assign(updateArticleDto)
 
-    await this.articleRepository.flush();
+    await this.articleRepository.flush()
 
-    return article;
+    return article
   }
 
   /**
@@ -124,12 +124,12 @@ export class ArticleService {
    * @param id id of the article
    */
   async delete(id: number): Promise<Article> {
-    const article = await this.articleRepository.findOneOrFail(id);
+    const article = await this.articleRepository.findOneOrFail(id)
 
-    this.articleRepository.remove(article);
+    this.articleRepository.remove(article)
 
-    await this.articleRepository.flush();
+    await this.articleRepository.flush()
 
-    return article;
+    return article
   }
 }

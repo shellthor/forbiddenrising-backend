@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { EntityRepository, QueryOrder, wrap } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { CreateSlideDto } from './dto/create-slide.dto';
-import { UpdateSlideDto } from './dto/update-slide.dto';
-import { Slide } from './slide.entity';
+import { Injectable } from '@nestjs/common'
+import { EntityRepository, QueryOrder, wrap } from '@mikro-orm/core'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { CreateSlideDto } from './dto/create-slide.dto'
+import { UpdateSlideDto } from './dto/update-slide.dto'
+import { Slide } from './slide.entity'
 
 @Injectable()
 export class SlideService {
@@ -13,11 +13,11 @@ export class SlideService {
   ) {}
 
   async create(createSlideDto: CreateSlideDto): Promise<Slide> {
-    const slide = this.slideRepository.create(createSlideDto);
+    const slide = this.slideRepository.create(createSlideDto)
 
-    await this.slideRepository.persistAndFlush(slide);
+    await this.slideRepository.persistAndFlush(slide)
 
-    return slide;
+    return slide
   }
 
   findAll(limit = 10, offset = 0): Promise<Slide[]> {
@@ -28,28 +28,28 @@ export class SlideService {
         limit,
         offset,
       },
-    );
+    )
   }
 
   findOne(id: number): Promise<Slide> {
-    return this.slideRepository.findOneOrFail(id);
+    return this.slideRepository.findOneOrFail(id)
   }
 
   async update(id: number, updateSlideDto: UpdateSlideDto): Promise<Slide> {
-    const slide = await this.slideRepository.findOneOrFail(id);
+    const slide = await this.slideRepository.findOneOrFail(id)
 
-    wrap(slide).assign(updateSlideDto);
+    wrap(slide).assign(updateSlideDto)
 
-    await this.slideRepository.flush();
+    await this.slideRepository.flush()
 
-    return slide;
+    return slide
   }
 
   async delete(id: number): Promise<Slide> {
-    const slide = await this.slideRepository.findOneOrFail(id);
+    const slide = await this.slideRepository.findOneOrFail(id)
 
-    await this.slideRepository.remove(slide);
+    await this.slideRepository.remove(slide)
 
-    return slide;
+    return slide
   }
 }

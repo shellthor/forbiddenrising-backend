@@ -1,15 +1,15 @@
-import { EntityRepository } from '@mikro-orm/knex';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { QueryOrder } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { FindCharacterDto } from '../blizzard/dto/find-character.dto';
-import { ProfileService } from '../blizzard/services/profile/profile.service';
-import { GuildCharacter } from './character.entity';
+import { EntityRepository } from '@mikro-orm/knex'
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { QueryOrder } from '@mikro-orm/core'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { FindCharacterDto } from '../blizzard/dto/find-character.dto'
+import { ProfileService } from '../blizzard/services/profile/profile.service'
+import { GuildCharacter } from './character.entity'
 
 @Injectable()
 export class CharacterService {
-  private readonly minCharacterLevel: number = this.config.get<number>('MINIMUM_CHARACTER_LEVEL');
+  private readonly minCharacterLevel: number = this.config.get<number>('MINIMUM_CHARACTER_LEVEL')
 
   constructor(
     @InjectRepository(GuildCharacter)
@@ -28,36 +28,36 @@ export class CharacterService {
     { name, realm, region }: FindCharacterDto,
     rank: number,
   ): Promise<GuildCharacter> {
-    const guildCharacter = new GuildCharacter(name, realm, region);
+    const guildCharacter = new GuildCharacter(name, realm, region)
 
-    guildCharacter.guild_rank = rank;
+    guildCharacter.guild_rank = rank
 
-    await this.populateGuildCharacter(guildCharacter);
+    await this.populateGuildCharacter(guildCharacter)
 
     if (guildCharacter.level < this.minCharacterLevel) {
-      throw new BadRequestException(`Below min level: ${this.minCharacterLevel}`);
+      throw new BadRequestException(`Below min level: ${this.minCharacterLevel}`)
     }
 
-    await this.characterRepository.persist(guildCharacter, true);
+    await this.characterRepository.persist(guildCharacter, true)
 
-    return guildCharacter;
+    return guildCharacter
   }
 
   public async populateGuildCharacter(guildCharacter: GuildCharacter): Promise<GuildCharacter> {
     const [summary, media] = await Promise.allSettled([
       this.profileService.getCharacterProfileSummary(guildCharacter.getFindCharacterDTO()),
       this.profileService.getCharacterMediaSummary(guildCharacter.getFindCharacterDTO()),
-    ]);
+    ])
 
     if (summary.status === 'fulfilled') {
-      guildCharacter.setCharacterProfileSummary(summary.value.data);
+      guildCharacter.setCharacterProfileSummary(summary.value.data)
     }
 
     if (media.status === 'fulfilled') {
-      guildCharacter.setCharacterMediaSummary(media.value.data);
+      guildCharacter.setCharacterMediaSummary(media.value.data)
     }
 
-    return guildCharacter;
+    return guildCharacter
   }
 
   /**
@@ -71,14 +71,14 @@ export class CharacterService {
       {
         orderBy: { guild_rank: QueryOrder.ASC, name: QueryOrder.ASC },
       },
-    );
+    )
   }
 
   /**
    *
    */
   findAll(): Promise<GuildCharacter[]> {
-    return this.characterRepository.findAll();
+    return this.characterRepository.findAll()
   }
 
   /**
@@ -86,7 +86,7 @@ export class CharacterService {
    * @param id
    */
   findById(id: number): Promise<GuildCharacter> {
-    return this.characterRepository.findOne({ id });
+    return this.characterRepository.findOne({ id })
   }
 
   /**
@@ -100,12 +100,12 @@ export class CharacterService {
       .where('LOWER(name) = LOWER(?)', [name])
       .andWhere('realm = ?', [realm])
       .andWhere('region = ?', [region])
-      .getSingleResult();
+      .getSingleResult()
   }
 
   async delete(findCharacterDto: FindCharacterDto): Promise<void> {
-    const character = await this.characterRepository.findOneOrFail(findCharacterDto);
+    const character = await this.characterRepository.findOneOrFail(findCharacterDto)
 
-    return this.characterRepository.remove(character);
+    return this.characterRepository.remove(character)
   }
 }

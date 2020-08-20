@@ -7,45 +7,45 @@ import {
   IsString,
   Max,
   Min,
-} from 'class-validator';
-import { FieldType } from '../enums/field-type.enum';
-import { FileTypes } from '../enums/file-types.enum';
+} from 'class-validator'
+import { FieldType } from '../enums/field-type.enum'
+import { FileTypes } from '../enums/file-types.enum'
 
 export class CreateQuestionDto {
   @IsString()
-  question: string;
+  question: string
 
   @IsNumber()
-  formId: number;
+  formId: number
 
   @IsString()
   @IsOptional()
-  label?: string;
+  label?: string
 
   @IsString()
   @IsOptional()
-  hint?: string;
+  hint?: string
 
   @IsBoolean()
-  required: boolean;
+  required: boolean
 
   @IsOptional()
   @IsString({ each: true })
-  choices?: string[];
+  choices?: string[]
 
   @IsOptional()
   @Min(0)
   @Max(10)
-  multiple?: number;
+  multiple?: number
 
   @IsNumber()
-  order: number;
+  order: number
 
   @IsOptional()
   @IsArray()
   @IsEnum(FileTypes, { each: true })
-  fileTypes?: FileTypes[];
+  fileTypes?: FileTypes[]
 
   @IsEnum(FieldType)
-  type: FieldType;
+  type: FieldType
 }

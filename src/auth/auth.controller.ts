@@ -1,44 +1,45 @@
-import { Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { Usr } from '../user/user.decorator';
-import { User } from '../user/user.entity';
-import { AuthService } from './auth.service';
+import { DiscordAuthGuard } from './guards/discord-auth.guard'
+import { BlizzardAuthGuard } from './guards/blizzard-auth.guard'
+import { Controller, Get, Post, UseGuards } from '@nestjs/common'
+import { Usr } from '../user/user.decorator'
+import { User } from '../user/user.entity'
+import { AuthService } from './auth.service'
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UseGuards(AuthGuard('discord'))
-  @Get('/discord')
-  discordLogin(@Usr() user: User): User {
-    return user;
+  @UseGuards(BlizzardAuthGuard)
+  @Post('/login')
+  login(@Usr() user: User): User {
+    return user
   }
 
-  @UseGuards(AuthGuard('discord'))
-  @Get('/discord/callback')
-  discordCallback(@Usr() user: User): { user: User; token: string } {
-    const token = this.authService.signToken(user);
+  @UseGuards(DiscordAuthGuard)
+  @Get('/login/discord')
+  loginDiscord(@Usr() user: User): User {
+    return user
+  }
+
+  @UseGuards(BlizzardAuthGuard)
+  @Get('/callback')
+  callbackBlizzard(@Usr() user: User): { user: User; token: string } {
+    const token = this.authService.signToken(user)
 
     return {
       user,
       token,
-    };
+    }
   }
 
-  @UseGuards(AuthGuard('blizzard'))
-  @Get('blizzard/login')
-  blizzardLogin(@Usr() user: User): User {
-    return user;
-  }
-
-  @UseGuards(AuthGuard('blizzard'))
-  @Post('blizzard/callback')
-  blizzardCallback(@Usr() user: User): { user: User; token: string } {
-    const token = this.authService.signToken(user);
+  @UseGuards(DiscordAuthGuard)
+  @Get('/callback/discord')
+  callbackDiscord(@Usr() user: User): { user: User; token: string } {
+    const token = this.authService.signToken(user)
 
     return {
       user,
       token,
-    };
+    }
   }
 }

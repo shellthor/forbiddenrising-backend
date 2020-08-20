@@ -1,24 +1,24 @@
-import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
-import { User } from '../user/user.entity';
+import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
+import { User } from '../user/user.entity'
 
 @Entity()
 export class FormComment {
   @PrimaryKey()
-  id!: number;
+  id!: number
 
   @Property()
-  message!: string;
+  message!: string
 
   @Property()
-  createdAt: Date = new Date();
+  createdAt: Date = new Date()
 
   @Property({ onUpdate: () => new Date() })
-  updatedAt: Date = new Date();
+  updatedAt: Date = new Date()
 
   /**
    * Relationships
    */
 
   @ManyToOne(() => User)
-  author!: User;
+  author!: User
 }

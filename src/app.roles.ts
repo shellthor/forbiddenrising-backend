@@ -1,4 +1,4 @@
-import { AccessControl } from 'accesscontrol';
+import { AccessControl } from 'accesscontrol'
 
 export enum Roles {
   GuildMaster = 'Rank0',
@@ -13,7 +13,7 @@ export enum Roles {
   Guest = 'Rank9',
 }
 
-export const accessControl = new AccessControl();
+export const accessControl = new AccessControl()
 
 accessControl
   .grant(Roles.Guest)
@@ -59,6 +59,6 @@ accessControl
   .createAny('raid')
   .updateAny('user')
   .deleteAny('user')
-  .updateAny('raid');
+  .updateAny('raid')
 
-export default accessControl;
+export default accessControl

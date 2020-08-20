@@ -1,24 +1,24 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Guild, GuildChannel, GuildMember, Message, Role } from 'discord.js';
-import { DISCORD_PREFIX } from '../app.constants';
-import { CommandParamtypes } from './decorators/mention.decorator';
-import { Context } from './discord.context';
-import { CommandMeta } from './discord.decorators';
-import { DiscordService } from './discord.service';
-import { ChannelNotFoundException } from './exceptions/channel-not-found.exception';
-import { BadCommandArgsException } from './exceptions/invalid-command.exception';
-import { MemberNotFoundException } from './exceptions/member-not-found.exception';
-import { RoleNotFoundException } from './exceptions/role-not-found.exception';
-import { CommandMatch, GroupMatch } from './interfaces/command-match.interface';
-import { PluginCommandMethod } from './interfaces/plugin-command.type';
-import { HelpPlugin } from './plugins/help.plugin';
-import { SettingsPlugin } from './plugins/settings.plugin';
+import { Injectable, Logger } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { Guild, GuildChannel, GuildMember, Message, Role } from 'discord.js'
+import { DISCORD_PREFIX } from '../app.constants'
+import { CommandParamtypes } from './decorators/mention.decorator'
+import { Context } from './discord.context'
+import { CommandMeta } from './discord.decorators'
+import { DiscordService } from './discord.service'
+import { ChannelNotFoundException } from './exceptions/channel-not-found.exception'
+import { BadCommandArgsException } from './exceptions/invalid-command.exception'
+import { MemberNotFoundException } from './exceptions/member-not-found.exception'
+import { RoleNotFoundException } from './exceptions/role-not-found.exception'
+import { CommandMatch, GroupMatch } from './interfaces/command-match.interface'
+import { PluginCommandMethod } from './interfaces/plugin-command.type'
+import { HelpPlugin } from './plugins/help.plugin'
+import { SettingsPlugin } from './plugins/settings.plugin'
 
 @Injectable()
 export class DiscordHandler {
-  private readonly prefix: string;
-  private readonly logger = new Logger(DiscordHandler.name);
+  private readonly prefix: string
+  private readonly logger = new Logger(DiscordHandler.name)
 
   constructor(
     private readonly discord: DiscordService,
@@ -26,7 +26,7 @@ export class DiscordHandler {
     private readonly settings: SettingsPlugin,
     config: ConfigService,
   ) {
-    this.prefix = config.get(DISCORD_PREFIX);
+    this.prefix = config.get(DISCORD_PREFIX)
   }
 
   /**
@@ -36,15 +36,15 @@ export class DiscordHandler {
    * @param message message received from the onMessage event
    */
   public async handle(message: Message): Promise<void> {
-    if (this.isInvalidMessage(message)) return;
+    if (this.isInvalidMessage(message)) return
 
-    const args = this.getMessageTokens(message);
-    const match = this.discord.getCommandOrGroup(args);
+    const args = this.getMessageTokens(message)
+    const match = this.discord.getCommandOrGroup(args)
 
-    if (!match) return;
+    if (!match) return
 
     // Remove command and/or group names.
-    args.splice(0, match.depth);
+    args.splice(0, match.depth)
 
     const ctx = new Context(
       this.discord.client,
@@ -52,17 +52,17 @@ export class DiscordHandler {
       message,
       this.discord.plugins,
       this.settings,
-    );
+    )
 
     try {
       // Currently unsupported to directly call a group.
       if ('group' in match) {
-        return this.help.sendGroupHelp(ctx, match.group);
+        return this.help.sendGroupHelp(ctx, match.group)
       }
 
-      match.method(ctx, ...this.validateArgs(args, match.command, match.method, message.guild));
+      match.method(ctx, ...this.validateArgs(args, match.command, match.method, message.guild))
     } catch (error) {
-      this.errorHandler(error, ctx, match, message);
+      this.errorHandler(error, ctx, match, message)
     }
   }
 
@@ -71,7 +71,7 @@ export class DiscordHandler {
    * match to a command or a command group.
    */
   private isInvalidMessage(message: Message) {
-    return (message.partial && message.author.bot) || !message.content.startsWith(this.prefix);
+    return (message.partial && message.author.bot) || !message.content.startsWith(this.prefix)
   }
 
   /**
@@ -83,24 +83,24 @@ export class DiscordHandler {
    * @param message message received from the onMessage event
    */
   private getMessageTokens(message: Message): string[] {
-    const args = message.content.slice(this.prefix.length).trim();
+    const args = message.content.slice(this.prefix.length).trim()
 
     return args.length
       ? args.match(/\\?.|^$/g).reduce(
           (p: any, c) => {
             if (c === '"') {
-              p.quote ^= 1;
+              p.quote ^= 1
             } else if (!p.quote && c === ' ') {
-              p.a.push('');
+              p.a.push('')
             } else {
-              p.a[p.a.length - 1] += c.replace(/\\(.)/, '$1');
+              p.a[p.a.length - 1] += c.replace(/\\(.)/, '$1')
             }
 
-            return p;
+            return p
           },
           { a: [''] },
         ).a
-      : [];
+      : []
   }
 
   /**
@@ -118,34 +118,34 @@ export class DiscordHandler {
     method: PluginCommandMethod,
     guild: Guild,
   ) {
-    const ret = [];
+    const ret = []
 
     // Ideally, this is removed if I eventually want to add non-string types.
-    if (!command.mentions.length) return args;
+    if (!command.mentions.length) return args
 
     for (let i = 0; i < args.length; i++) {
       // Offset due to metadata considering the injected context parameter.
-      const mention = command.mentions.find(m => m.index === i + 1);
+      const mention = command.mentions.find(m => m.index === i + 1)
 
       if (!mention) {
-        ret.push(args[i]);
-        continue;
+        ret.push(args[i])
+        continue
       }
 
       if (mention.paramtype === CommandParamtypes.MEMBER) {
-        ret.push(this.getMemberMention(args[i], guild));
+        ret.push(this.getMemberMention(args[i], guild))
       } else if (mention.paramtype === CommandParamtypes.CHANNEL) {
-        ret.push(this.getChannelMention(args[i], guild));
+        ret.push(this.getChannelMention(args[i], guild))
       } else if (mention.paramtype === CommandParamtypes.ROLE) {
-        ret.push(this.getRoleMention(args[i], guild));
+        ret.push(this.getRoleMention(args[i], guild))
       } else {
-        throw new BadCommandArgsException();
+        throw new BadCommandArgsException()
       }
     }
 
-    if (method.length - 1 > ret.length) throw new BadCommandArgsException();
+    if (method.length - 1 > ret.length) throw new BadCommandArgsException()
 
-    return ret;
+    return ret
   }
 
   /**
@@ -156,15 +156,15 @@ export class DiscordHandler {
    * @param guild Discord guild from the message
    */
   public getMemberMention(argument: string, guild: Guild): GuildMember {
-    const matches = argument.match(/<@!?(\d{17,19})>/);
+    const matches = argument.match(/<@!?(\d{17,19})>/)
 
-    if (!matches) throw new BadCommandArgsException();
+    if (!matches) throw new BadCommandArgsException()
 
-    const member = guild.members.cache.get(matches[1]);
+    const member = guild.members.cache.get(matches[1])
 
-    if (!member) throw new MemberNotFoundException();
+    if (!member) throw new MemberNotFoundException()
 
-    return member;
+    return member
   }
 
   /**
@@ -175,15 +175,15 @@ export class DiscordHandler {
    * @param guild Discord guild from the message
    */
   public getChannelMention(argument: string, guild: Guild): GuildChannel {
-    const matches = argument.match(/<#(\d{17,19})>/);
+    const matches = argument.match(/<#(\d{17,19})>/)
 
-    if (!matches) throw new BadCommandArgsException();
+    if (!matches) throw new BadCommandArgsException()
 
-    const channel = guild.channels.cache.get(matches[1]);
+    const channel = guild.channels.cache.get(matches[1])
 
-    if (!channel) throw new ChannelNotFoundException();
+    if (!channel) throw new ChannelNotFoundException()
 
-    return channel;
+    return channel
   }
 
   /**
@@ -194,15 +194,15 @@ export class DiscordHandler {
    * @param guild Discord guild from the message
    */
   public getRoleMention(argument: string, guild: Guild): Role {
-    const matches = argument.match(/<@&(\d{17,19})>/);
+    const matches = argument.match(/<@&(\d{17,19})>/)
 
-    if (!matches) throw new BadCommandArgsException();
+    if (!matches) throw new BadCommandArgsException()
 
-    const role = guild.roles.cache.get(matches[1]);
+    const role = guild.roles.cache.get(matches[1])
 
-    if (!role) throw new RoleNotFoundException();
+    if (!role) throw new RoleNotFoundException()
 
-    return role;
+    return role
   }
 
   /**
@@ -221,19 +221,19 @@ export class DiscordHandler {
     message: Message,
   ): Promise<Message> | Promise<void> {
     if (error instanceof BadCommandArgsException) {
-      return this.help.sendCommandHelp(ctx, (match as CommandMatch).command);
+      return this.help.sendCommandHelp(ctx, (match as CommandMatch).command)
     }
 
     if (error instanceof MemberNotFoundException) {
-      return message.reply('That user was not found');
+      return message.reply('That user was not found')
     }
 
     if (error instanceof ChannelNotFoundException) {
-      return message.reply('Channel not found');
+      return message.reply('Channel not found')
     }
 
-    message.reply('An unexpected error occured');
+    message.reply('An unexpected error occured')
 
-    this.logger.error(error.message, error.stack);
+    this.logger.error(error.message, error.stack)
   }
 }

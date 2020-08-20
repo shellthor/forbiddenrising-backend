@@ -1,4 +1,4 @@
-import { CharacterProfileSummary } from '../../src/blizzard/interfaces/profile/character-profile/character-profile-summary.interface';
+import { CharacterProfileSummary } from '../../src/blizzard/interfaces/profile/character-profile/character-profile-summary.interface'
 
 const CharacterProfileSummaryMock = (id: number, name: string): CharacterProfileSummary => ({
   _links: {
@@ -141,6 +141,6 @@ const CharacterProfileSummaryMock = (id: number, name: string): CharacterProfile
     href:
       'https://us.api.blizzard.com/profile/wow/character/hyjal/tesali/professions?namespace=profile-us',
   },
-});
+})
 
-export default CharacterProfileSummaryMock;
+export default CharacterProfileSummaryMock

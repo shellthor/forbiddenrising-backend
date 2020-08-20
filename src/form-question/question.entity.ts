@@ -1,58 +1,58 @@
-import { BaseEntity, Entity, Enum, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
-import { v4 } from 'uuid';
-import { EnumArray } from '../../config/types/enum-array.type';
-import { Form } from '../form/form.entity';
-import { FieldType } from './enums/field-type.enum';
-import { FileTypes } from './enums/file-types.enum';
+import { BaseEntity, Entity, Enum, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
+import { v4 } from 'uuid'
+import { EnumArray } from '../../config/types/enum-array.type'
+import { Form } from '../form/form.entity'
+import { FieldType } from './enums/field-type.enum'
+import { FileTypes } from './enums/file-types.enum'
 
 @Entity()
 export class FormQuestion extends BaseEntity<FormQuestion, 'id'> {
   @PrimaryKey()
-  id: string = v4();
+  id: string = v4()
 
   @Property()
-  question!: string;
+  question!: string
 
   @Property({ nullable: true })
-  label?: string;
+  label?: string
 
   @Property({ nullable: true })
-  hint?: string;
+  hint?: string
 
   @Property()
-  required!: boolean;
+  required!: boolean
 
   @Property({ nullable: true })
-  choices?: string[];
+  choices?: string[]
 
   @Property({ nullable: true })
-  multiple?: number;
+  multiple?: number
 
   @Property()
-  order!: number;
+  order!: number
 
   @Enum(() => FieldType)
-  type!: FieldType;
+  type!: FieldType
 
   @Property({ type: EnumArray, nullable: true })
-  fileTypes?: FileTypes[];
+  fileTypes?: FileTypes[]
 
   @Property()
-  deleted = false;
+  deleted = false
 
   @Property()
-  hasAnswers = false;
+  hasAnswers = false
 
   @Property()
-  createdAt: Date = new Date();
+  createdAt: Date = new Date()
 
   @Property({ onUpdate: () => new Date() })
-  updatedAt: Date = new Date();
+  updatedAt: Date = new Date()
 
   /**
    * Relationships
    */
 
   @ManyToOne(() => Form)
-  form!: Form;
+  form!: Form
 }

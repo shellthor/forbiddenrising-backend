@@ -1,8 +1,8 @@
-import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
-import { FieldType } from '../../form-question/enums/field-type.enum';
-import { FormQuestion } from '../../form-question/question.entity';
-import { FormQuestionService } from '../../form-question/question.service';
-import { CreateFormSubmissionDto } from '../dto';
+import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform } from '@nestjs/common'
+import { FieldType } from '../../form-question/enums/field-type.enum'
+import { FormQuestion } from '../../form-question/question.entity'
+import { FormQuestionService } from '../../form-question/question.service'
+import { CreateFormSubmissionDto } from '../dto'
 
 @Injectable()
 export class CreateSubmissionPipe implements PipeTransform {
@@ -12,38 +12,38 @@ export class CreateSubmissionPipe implements PipeTransform {
     createSubmissionDto: CreateFormSubmissionDto,
     metadata: ArgumentMetadata,
   ): Promise<CreateFormSubmissionDto> {
-    const { formId, answers } = createSubmissionDto;
-    const questions = await this.questionService.findByForm(formId);
+    const { formId, answers } = createSubmissionDto
+    const questions = await this.questionService.findByForm(formId)
 
     if (!this.toValidate(metadata)) {
-      return createSubmissionDto;
+      return createSubmissionDto
     }
 
     // Unintelligent check. Should check if we have a Record<UUID, string | boolean | string[]>.
     if (typeof answers !== 'object') {
-      throw new BadRequestException('Form answers should be presented as a record.');
+      throw new BadRequestException('Form answers should be presented as a record.')
     }
 
     if (!questions || !questions.length || !answers || !Object.keys(answers).length) {
-      throw new BadRequestException('No data to submit.');
+      throw new BadRequestException('No data to submit.')
     }
 
     for (const question of questions) {
       // Ignore removed questions and file uploads.
-      if (question.deleted || question.type === FieldType.UPLOAD) continue;
+      if (question.deleted || question.type === FieldType.UPLOAD) continue
 
       // Answers is missing a required question.
       if (question.required && !answers[question.id]) {
-        throw new BadRequestException(`Question [${question.id}] is required.`);
+        throw new BadRequestException(`Question [${question.id}] is required.`)
       }
 
       // An empty optional field will be null.
-      if (!question.required && !answers[question.id]) continue;
+      if (!question.required && !answers[question.id]) continue
 
-      this.validateAnswer(question, answers[question.id]);
+      this.validateAnswer(question, answers[question.id])
     }
 
-    return createSubmissionDto;
+    return createSubmissionDto
   }
 
   /**
@@ -75,12 +75,12 @@ export class CreateSubmissionPipe implements PipeTransform {
         type,
         id,
         error: 'Expected string answer.',
-      });
+      })
     }
 
     // Mutliple is a hard limit on the number of allowable answers.
     if (multiple && Array.isArray(answer) && answer.length > multiple) {
-      throw new BadRequestException(`Only ${multiple} answers are allowed.`);
+      throw new BadRequestException(`Only ${multiple} answers are allowed.`)
     }
 
     // Single checkboxes without multiple choices are boolean.
@@ -89,7 +89,7 @@ export class CreateSubmissionPipe implements PipeTransform {
         type,
         id,
         error: 'Expected boolean answer.',
-      });
+      })
     }
 
     // Selects without multiple selectable options should return a string.
@@ -98,7 +98,7 @@ export class CreateSubmissionPipe implements PipeTransform {
         type,
         id,
         error: 'Expected string answer.',
-      });
+      })
     }
 
     // Check if Checkbox and Select multiple values are valid.
@@ -108,29 +108,29 @@ export class CreateSubmissionPipe implements PipeTransform {
           type,
           id,
           error: `Array of strings expected.`,
-        });
+        })
       }
 
-      const values = [...choices];
+      const values = [...choices]
 
       for (let i = 0; i < answer.length; i++) {
-        const index = values.indexOf(answer[i]);
+        const index = values.indexOf(answer[i])
 
         if (index < 0) {
           throw new BadRequestException({
             type,
             id,
             error: `${answer[i]} is an invalid choice or illegal duplicate.`,
-          });
+          })
         }
 
-        values.splice(index, 1);
+        values.splice(index, 1)
       }
     }
 
     // Checkboxes with only one choice are boolean toggles.
     if (type === FieldType.CHECKBOX && choices.length === 1 && typeof answer !== 'boolean') {
-      throw new BadRequestException({ type, id, error: `Expected boolean.` });
+      throw new BadRequestException({ type, id, error: `Expected boolean.` })
     }
 
     // Radios and Selects without multiple values should return a single, valid choice.
@@ -140,7 +140,7 @@ export class CreateSubmissionPipe implements PipeTransform {
           type,
           id,
           error: `'${answer}' is not a valid choice.`,
-        });
+        })
       }
     }
   }
@@ -150,6 +150,6 @@ export class CreateSubmissionPipe implements PipeTransform {
    * @param metadata ArgumentMetadata
    */
   private toValidate(metadata: ArgumentMetadata): boolean {
-    return metadata.type === 'body';
+    return metadata.type === 'body'
   }
 }

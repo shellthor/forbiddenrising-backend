@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { EntityRepository, QueryOrder } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { CreateRaidDto } from './dto/create-raid.dto';
-import { UpdateRaidDto } from './dto/update-raid.dto';
-import { Raid } from './raid.entity';
+import { Injectable } from '@nestjs/common'
+import { EntityRepository, QueryOrder } from '@mikro-orm/core'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { CreateRaidDto } from './dto/create-raid.dto'
+import { UpdateRaidDto } from './dto/update-raid.dto'
+import { Raid } from './raid.entity'
 
 @Injectable()
 export class RaidService {
@@ -19,11 +19,11 @@ export class RaidService {
    * @param createRaidDto
    */
   async create(createRaidDto: CreateRaidDto): Promise<Raid> {
-    const raid = this.raidRepository.create(createRaidDto);
+    const raid = this.raidRepository.create(createRaidDto)
 
-    await this.raidRepository.persistAndFlush(raid);
+    await this.raidRepository.persistAndFlush(raid)
 
-    return raid;
+    return raid
   }
 
   /**
@@ -36,8 +36,8 @@ export class RaidService {
     limit = 10,
     offset = 0,
   ): Promise<{
-    result: Raid[];
-    total: number;
+    result: Raid[]
+    total: number
   }> {
     const [result, total] = await this.raidRepository.findAndCount(
       {},
@@ -46,9 +46,9 @@ export class RaidService {
         limit,
         offset,
       },
-    );
+    )
 
-    return { result, total };
+    return { result, total }
   }
 
   /**
@@ -57,7 +57,7 @@ export class RaidService {
    * @param slugs array of raid slugs to retrieve
    */
   async findAllBySlugs(slugs: string[]): Promise<Raid[]> {
-    return this.raidRepository.find({ slug: { $in: slugs } });
+    return this.raidRepository.find({ slug: { $in: slugs } })
   }
 
   /**
@@ -70,8 +70,8 @@ export class RaidService {
     limit = 4,
     offset = 0,
   ): Promise<{
-    result: Raid[];
-    total: number;
+    result: Raid[]
+    total: number
   }> {
     const [result, total] = await this.raidRepository.findAndCount(
       { isFeatured: true },
@@ -80,9 +80,9 @@ export class RaidService {
         limit,
         offset,
       },
-    );
+    )
 
-    return { result, total };
+    return { result, total }
   }
 
   /**
@@ -91,7 +91,7 @@ export class RaidService {
    * @param id id of the raid
    */
   findOne(id: number): Promise<Raid> {
-    return this.raidRepository.findOneOrFail(id);
+    return this.raidRepository.findOneOrFail(id)
   }
 
   /**
@@ -101,7 +101,7 @@ export class RaidService {
    * @param slug slug of the raid
    */
   findOneBySlug(slug: string): Promise<Raid> {
-    return this.raidRepository.findOne({ slug });
+    return this.raidRepository.findOne({ slug })
   }
 
   /**
@@ -112,12 +112,12 @@ export class RaidService {
    * @param updateRaidDto properties to update within the raid entity
    */
   async update(id: number, updateRaidDto: UpdateRaidDto): Promise<Raid> {
-    const raid = await this.raidRepository.findOneOrFail(id);
+    const raid = await this.raidRepository.findOneOrFail(id)
 
-    raid.assign(updateRaidDto);
+    raid.assign(updateRaidDto)
 
-    await this.raidRepository.flush();
+    await this.raidRepository.flush()
 
-    return raid;
+    return raid
   }
 }

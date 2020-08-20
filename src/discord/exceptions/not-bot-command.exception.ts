@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common'
 
 /**
  * Exception thrown when a bot message is parsed and deemed not

@@ -1,3 +1,3 @@
-import { FieldType } from './field-type.enum';
+import { FieldType } from './field-type.enum'
 
-export const multipleFields = [FieldType.CHECKBOX, FieldType.SELECT, FieldType.UPLOAD];
+export const multipleFields = [FieldType.CHECKBOX, FieldType.SELECT, FieldType.UPLOAD]

@@ -1,3 +1,3 @@
 export interface CharacterRemoveResult {
-  names: string[];
+  names: string[]
 }

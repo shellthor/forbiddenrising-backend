@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException } from '@nestjs/common'
 
 /**
  * Exception that the commands arguments are malformed and the

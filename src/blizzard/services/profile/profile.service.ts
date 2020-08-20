@@ -1,17 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { AxiosResponse } from 'axios';
-import { User } from '../../../user/user.entity';
-import { RateLimiter } from '../../blizzard.rate-limiter';
-import { FindCharacterDto } from '../../dto/find-character.dto';
-import { ProfileEndpoints } from '../../enums/profile-api.enum';
-import * as Profile from '../../interfaces/profile';
-import { GameDataService } from '../game-data/game-data.service';
+import { Injectable } from '@nestjs/common'
+import { AxiosResponse } from 'axios'
+import { User } from '../../../user/user.entity'
+import { RateLimiter } from '../../blizzard.rate-limiter'
+import { FindCharacterDto } from '../../dto/find-character.dto'
+import { ProfileEndpoints } from '../../enums/profile-api.enum'
+import * as Profile from '../../interfaces/profile'
+import { GameDataService } from '../game-data/game-data.service'
 
 export interface ProfileParams {
-  realmId?: number;
-  characterId?: number;
-  seasonId?: number;
-  pvpBracket?: number;
+  realmId?: number
+  characterId?: number
+  seasonId?: number
+  pvpBracket?: number
 }
 
 @Injectable()
@@ -28,7 +28,7 @@ export class ProfileService {
       'https://us.api.blizzard.com/profile/user/wow',
       null,
       user,
-    );
+    )
   }
 
   async getProtectedCharacterProfileSummary(
@@ -37,13 +37,13 @@ export class ProfileService {
   ): Promise<AxiosResponse<Profile.ProtectedCharacterProfileSummary>> {
     return this.rateLimiter.get<Profile.ProtectedCharacterProfileSummary>(
       `https://us.api.blizzard.com/profile/user/wow/protected-character/${realmId}-${characterId}`,
-    );
+    )
   }
 
   async getAccountCollectionsIndex(): Promise<AxiosResponse<Profile.AccountCollectionsIndex>> {
     return this.rateLimiter.get<Profile.AccountCollectionsIndex>(
       'https://us.api.blizzard.com/profile/user/wow/collections',
-    );
+    )
   }
 
   async getAccountMountsCollectionSummary(): Promise<
@@ -51,7 +51,7 @@ export class ProfileService {
   > {
     return this.rateLimiter.get<Profile.AccountMountsCollectionSummary>(
       'https://us.api.blizzard.com/profile/user/wow/collections/mounts',
-    );
+    )
   }
 
   async getAccountPetsCollectionSummary(): Promise<
@@ -59,7 +59,7 @@ export class ProfileService {
   > {
     return this.rateLimiter.get<Profile.AccountPetsCollectionSummary>(
       'https://us.api.blizzard.com/profile/user/wow/collections/mounts',
-    );
+    )
   }
 
   async getCharacterAchievementsSummary({
@@ -72,7 +72,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterAchievementStatistics({
@@ -85,7 +85,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterAppearanceSummary({
@@ -98,7 +98,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterCollectionsIndex({
@@ -111,7 +111,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterMountsCollectionSummary({
@@ -124,7 +124,7 @@ export class ProfileService {
           '{characterName}',
           name,
         ),
-    );
+    )
   }
 
   async getCharacterPetsCollectionSummary({
@@ -137,7 +137,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterRaids({
@@ -150,7 +150,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterEquipmentSummary(
@@ -163,29 +163,29 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
 
     if (cache) {
       resp.data.equipped_items = await Promise.all(
         resp.data.equipped_items.map(async slot => {
           try {
-            const media = await this.gameDataService.getGameItemMedia(slot.item.id);
+            const media = await this.gameDataService.getGameItemMedia(slot.item.id)
 
             slot.media.assets = {
               key: media.assets[0].key,
               value: media.assets[0].value,
-            };
+            }
 
-            return slot;
+            return slot
           } catch (error) {
-            console.log('Profile Error', error);
-            return slot;
+            console.log('Profile Error', error)
+            return slot
           }
         }),
-      );
+      )
     }
 
-    return resp;
+    return resp
   }
 
   async getCharacterHunterPetsSummary({
@@ -198,7 +198,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterMediaSummary({
@@ -211,7 +211,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterMythicKeystoneProfileIndex({
@@ -224,7 +224,7 @@ export class ProfileService {
           '{characterName}',
           name,
         ),
-    );
+    )
   }
 
   async getCharacterMythicKeystoneSeasonDetails({
@@ -237,7 +237,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterProfileSummary({
@@ -250,7 +250,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterProfileStatus(
@@ -264,7 +264,7 @@ export class ProfileService {
           name.toLowerCase(),
         ),
       lastModified,
-    );
+    )
   }
 
   async getCharacterPvPBracketStatistics({
@@ -277,7 +277,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterPvPSummary(
@@ -289,7 +289,7 @@ export class ProfileService {
         ProfileEndpoints.CharacterPvPSummary.replace('{realmSlug}', realm)
           .replace('{characterName}', name.toLowerCase())
           .replace('{pvpBracket}', pvpBracket.toString()),
-    );
+    )
   }
 
   async getCharacterQuests({
@@ -302,7 +302,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterCompletedQuests({
@@ -315,7 +315,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterReputationsSummary({
@@ -328,7 +328,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterSpecializationsSummary({
@@ -341,7 +341,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterStatisticsSummary({
@@ -354,7 +354,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getCharacterTitlesSummary({
@@ -367,7 +367,7 @@ export class ProfileService {
           '{characterName}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getGuild({ name, realm }: FindCharacterDto): Promise<AxiosResponse<Profile.Guild>> {
@@ -377,7 +377,7 @@ export class ProfileService {
           '{nameSlug}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getGuildActivity({
@@ -390,7 +390,7 @@ export class ProfileService {
           '{nameSlug}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getGuildAchievements({
@@ -403,7 +403,7 @@ export class ProfileService {
           '{nameSlug}',
           name.toLowerCase(),
         ),
-    );
+    )
   }
 
   async getGuildRoster(
@@ -416,12 +416,12 @@ export class ProfileService {
           '{nameSlug}',
           name.toLowerCase(),
         ),
-    );
+    )
 
     if (minLevel) {
-      resp.data.members = resp.data.members.filter(m => m.character.level >= minLevel);
+      resp.data.members = resp.data.members.filter(m => m.character.level >= minLevel)
     }
 
-    return resp;
+    return resp
   }
 }

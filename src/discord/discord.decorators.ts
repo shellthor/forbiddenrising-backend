@@ -1,4 +1,4 @@
-import { Inject, SetMetadata } from '@nestjs/common';
+import { Inject, SetMetadata } from '@nestjs/common'
 import {
   DISCORD_CLIENT,
   DISCORD_PLUGIN,
@@ -6,16 +6,16 @@ import {
   DISCORD_PLUGIN_EVENT,
   DISCORD_PLUGIN_GROUP,
   DISCORD_PLUGIN_LOOP,
-} from '../app.constants';
-import { isString } from '../app.utils';
-import { MentionMeta } from './decorators/mention.decorator';
-import { DiscordEvent } from './interfaces/events.enum';
+} from '../app.constants'
+import { isString } from '../app.utils'
+import { MentionMeta } from './decorators/mention.decorator'
+import { DiscordEvent } from './interfaces/events.enum'
 
 export interface PluginOptions {
   /**
    * Name of the plugin used for the help command.
    */
-  name: string;
+  name: string
 }
 
 export interface CommandOptions {
@@ -23,22 +23,22 @@ export interface CommandOptions {
    * Specifies the command name that is typed into Discord to invoke it.
    * The prefix is prepended to this name.
    */
-  name: string;
+  name: string
 
   /**
    * Specifies if the command is part of a group.
    */
-  group?: string;
+  group?: string
 
   /**
    * Specifies the description of the command. This should be a short one-liner.
    */
-  description?: string;
+  description?: string
 
   /**
    * Specifies optional names to invoke the commmand with for convenience.
    */
-  alias?: string[];
+  alias?: string[]
 
   /**
    * Specifies the help text shown when the command help menu is shown or
@@ -46,7 +46,7 @@ export interface CommandOptions {
    *
    * The command and prefix are added automatically.
    */
-  syntax?: string;
+  syntax?: string
 }
 
 export interface GroupOptions {
@@ -55,53 +55,53 @@ export interface GroupOptions {
    *
    * This shows in the help command.
    */
-  name: string;
+  name: string
 
   /**
    * Specifies the description of the command group.
    *
    * This shows in the help command.
    */
-  description?: string;
+  description?: string
 
   /**
    * Specifies any alternative invoking aliases for the command group.
    */
-  alias?: string[];
+  alias?: string[]
 }
 
 export interface EventOptions {
   /**
    * Enum of the event that should call this method when emitted.
    */
-  name: DiscordEvent;
+  name: DiscordEvent
 }
 
 export interface LoopOptions {
   /**
    * Name which describes the loop's functionality.
    */
-  name: string;
+  name: string
 }
 
 export interface PluginMethodOptions {
   /**
    * The name of the method being decorated.
    */
-  method: string;
+  method: string
 }
 
-export type CommandMeta = CommandOptions & PluginMethodOptions & MentionMeta;
-export type GroupMeta = GroupOptions & PluginMethodOptions;
-export type EventMeta = EventOptions & PluginMethodOptions;
-export type LoopMeta = LoopOptions & PluginMethodOptions;
+export type CommandMeta = CommandOptions & PluginMethodOptions & MentionMeta
+export type GroupMeta = GroupOptions & PluginMethodOptions
+export type EventMeta = EventOptions & PluginMethodOptions
+export type LoopMeta = LoopOptions & PluginMethodOptions
 
 /**
  * Decorator that marks a class as a Discord plugin.
  *
  * @param {string} name string of the name of the plugin housing commands.
  */
-export function Plugin(name: string): ClassDecorator;
+export function Plugin(name: string): ClassDecorator
 
 /**
  * Decorator that marks a class as a Discord plugin.
@@ -110,13 +110,13 @@ export function Plugin(name: string): ClassDecorator;
  *
  * - `name` - string that defines the name of the plugin housing commands.
  */
-export function Plugin(options: PluginOptions): ClassDecorator;
+export function Plugin(options: PluginOptions): ClassDecorator
 
 export function Plugin(nameOrOptions: string | PluginOptions): ClassDecorator {
   return SetMetadata(
     DISCORD_PLUGIN,
     isString(nameOrOptions) ? { name: nameOrOptions } : nameOrOptions,
-  );
+  )
 }
 
 /**
@@ -126,7 +126,7 @@ export function Plugin(nameOrOptions: string | PluginOptions): ClassDecorator {
  *
  * @param {string} name name of the command group
  */
-export function CommandGroup(name: string): MethodDecorator;
+export function CommandGroup(name: string): MethodDecorator
 
 /**
  * Decorator that marks a method within a Discord plugin as a group.
@@ -138,10 +138,10 @@ export function CommandGroup(name: string): MethodDecorator;
  * - `name` - name of the command group
  * - `description` - short description of the command group, shown in the help command
  */
-export function CommandGroup(options: GroupOptions): MethodDecorator;
+export function CommandGroup(options: GroupOptions): MethodDecorator
 
 export function CommandGroup(nameOrOptions: string | GroupOptions): MethodDecorator {
-  return createPluginMethodDecorator<string | GroupOptions>(DISCORD_PLUGIN_GROUP, nameOrOptions);
+  return createPluginMethodDecorator<string | GroupOptions>(DISCORD_PLUGIN_GROUP, nameOrOptions)
 }
 
 /**
@@ -149,7 +149,7 @@ export function CommandGroup(nameOrOptions: string | GroupOptions): MethodDecora
  *
  * @param {string} name name of the command users type out to execute
  */
-export function Command(name: string): MethodDecorator;
+export function Command(name: string): MethodDecorator
 
 /**
  *
@@ -160,13 +160,10 @@ export function Command(name: string): MethodDecorator;
  * - `alias` - alias or aliases of the command as alternate names for execution
  * - `group` - optional parameter denoting the command is part of a group
  */
-export function Command(options: CommandOptions): MethodDecorator;
+export function Command(options: CommandOptions): MethodDecorator
 
 export function Command(nameOrOptions: string | CommandOptions): MethodDecorator {
-  return createPluginMethodDecorator<string | CommandOptions>(
-    DISCORD_PLUGIN_COMMAND,
-    nameOrOptions,
-  );
+  return createPluginMethodDecorator<string | CommandOptions>(DISCORD_PLUGIN_COMMAND, nameOrOptions)
 }
 
 /**
@@ -175,7 +172,7 @@ export function Command(nameOrOptions: string | CommandOptions): MethodDecorator
  *
  * @param {DiscordEvent} event `DicordEvent` to listen to when emitted.
  */
-export function Event(event: DiscordEvent): MethodDecorator;
+export function Event(event: DiscordEvent): MethodDecorator
 
 /**
  * Decorator that marks a method within a Discord plugin as
@@ -185,13 +182,13 @@ export function Event(event: DiscordEvent): MethodDecorator;
  *
  * - `event` - `DicordEvent` to listen to when emitted.
  */
-export function Event(options: EventOptions): MethodDecorator;
+export function Event(options: EventOptions): MethodDecorator
 
 export function Event(eventOrOptions: DiscordEvent | EventOptions): MethodDecorator {
   return createPluginMethodDecorator<DiscordEvent | EventOptions>(
     DISCORD_PLUGIN_EVENT,
     eventOrOptions,
-  );
+  )
 }
 
 /**
@@ -201,7 +198,7 @@ export function Event(eventOrOptions: DiscordEvent | EventOptions): MethodDecora
  *
  * @param name name describing the loop
  */
-export function Loop(name: string): MethodDecorator;
+export function Loop(name: string): MethodDecorator
 
 /**
  * Decorator that marks a method within a Discord plugin as
@@ -212,10 +209,10 @@ export function Loop(name: string): MethodDecorator;
  *
  * - `name` - name describing the loop
  */
-export function Loop(options: LoopOptions): MethodDecorator;
+export function Loop(options: LoopOptions): MethodDecorator
 
 export function Loop(nameOrOptions: string | LoopOptions): MethodDecorator {
-  return createPluginMethodDecorator<string | LoopOptions>(DISCORD_PLUGIN_LOOP, nameOrOptions);
+  return createPluginMethodDecorator<string | LoopOptions>(DISCORD_PLUGIN_LOOP, nameOrOptions)
 }
 
 /**
@@ -229,13 +226,13 @@ export function Loop(nameOrOptions: string | LoopOptions): MethodDecorator {
  */
 function createPluginMethodDecorator<T>(key: any, data: T) {
   return (target: Record<string, unknown>, propertyKey: string | symbol) => {
-    const metadata = Reflect.getOwnMetadata(key, target) || [];
-    const options = isString(data) ? { name: data } : data;
+    const metadata = Reflect.getOwnMetadata(key, target) || []
+    const options = isString(data) ? { name: data } : data
 
-    metadata.push({ ...options, method: propertyKey });
+    metadata.push({ ...options, method: propertyKey })
 
-    Reflect.defineMetadata(key, metadata, target);
-  };
+    Reflect.defineMetadata(key, metadata, target)
+  }
 }
 
 /**
@@ -246,4 +243,4 @@ export const InjectClient = (): ((
   target: Record<string, unknown>,
   key: string | symbol,
   index?: number,
-) => void) => Inject(DISCORD_CLIENT);
+) => void) => Inject(DISCORD_CLIENT)

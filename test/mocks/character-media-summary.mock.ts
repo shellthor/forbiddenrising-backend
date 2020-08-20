@@ -1,4 +1,4 @@
-import { CharacterMediaSummary } from '../../src/blizzard/interfaces/profile/character-media/character-media-summary.interface';
+import { CharacterMediaSummary } from '../../src/blizzard/interfaces/profile/character-media/character-media-summary.interface'
 
 const CharacterMediaSummaryMock = (id: number, name: string): CharacterMediaSummary => ({
   _links: {
@@ -25,6 +25,6 @@ const CharacterMediaSummaryMock = (id: number, name: string): CharacterMediaSumm
   avatar_url: 'https://render-us.worldofwarcraft.com/character/area-52/35/177267491-avatar.jpg',
   bust_url: 'https://render-us.worldofwarcraft.com/character/area-52/35/177267491-inset.jpg',
   render_url: 'https://render-us.worldofwarcraft.com/character/area-52/35/177267491-main.jpg',
-});
+})
 
-export default CharacterMediaSummaryMock;
+export default CharacterMediaSummaryMock

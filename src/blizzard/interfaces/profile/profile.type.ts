@@ -1,4 +1,4 @@
-import { ProfileEndpoints } from '../../enums/profile-api.enum';
+import { ProfileEndpoints } from '../../enums/profile-api.enum'
 import {
   AccountCollectionsIndex,
   AccountMountsCollectionSummary,
@@ -30,53 +30,53 @@ import {
   GuildActivity,
   GuildRoster,
   ProtectedCharacterProfileSummary,
-} from './index';
+} from './index'
 
 export type ProfileEndpointReturnType = {
   // Account Profile API
-  [ProfileEndpoints.AccountProfileSummary]: AccountProfileSummary;
-  [ProfileEndpoints.ProtectedAccountProfileSummary]: ProtectedCharacterProfileSummary;
-  [ProfileEndpoints.AccountCollectionsIndex]: AccountCollectionsIndex;
-  [ProfileEndpoints.AccountMountsCollectionSummary]: AccountMountsCollectionSummary;
-  [ProfileEndpoints.AccountPetsCollectionSummary]: AccountPetsCollectionSummary;
+  [ProfileEndpoints.AccountProfileSummary]: AccountProfileSummary
+  [ProfileEndpoints.ProtectedAccountProfileSummary]: ProtectedCharacterProfileSummary
+  [ProfileEndpoints.AccountCollectionsIndex]: AccountCollectionsIndex
+  [ProfileEndpoints.AccountMountsCollectionSummary]: AccountMountsCollectionSummary
+  [ProfileEndpoints.AccountPetsCollectionSummary]: AccountPetsCollectionSummary
   // Character Achievements API
-  [ProfileEndpoints.CharacterAchievementsSummary]: CharacterAchievementsSummary;
-  [ProfileEndpoints.CharacterAchievementStatistics]: CharacterAchievementStatistics;
+  [ProfileEndpoints.CharacterAchievementsSummary]: CharacterAchievementsSummary
+  [ProfileEndpoints.CharacterAchievementStatistics]: CharacterAchievementStatistics
   // Character Appearance API
-  [ProfileEndpoints.CharacterAppearanceSummary]: CharacterAppearanceSummary;
+  [ProfileEndpoints.CharacterAppearanceSummary]: CharacterAppearanceSummary
   // Character Collections API
-  [ProfileEndpoints.CharacterCollectionsIndex]: CharacterCollectionsIndex;
-  [ProfileEndpoints.CharacterMountsCollectionSummary]: CharacterMountsCollectionSummary;
-  [ProfileEndpoints.CharacterPetsCollectionSummary]: CharacterPetsCollectionSummary;
+  [ProfileEndpoints.CharacterCollectionsIndex]: CharacterCollectionsIndex
+  [ProfileEndpoints.CharacterMountsCollectionSummary]: CharacterMountsCollectionSummary
+  [ProfileEndpoints.CharacterPetsCollectionSummary]: CharacterPetsCollectionSummary
   // Character Equipment API
-  [ProfileEndpoints.CharacterEquipmentSummary]: CharacterEquipmentSummary;
+  [ProfileEndpoints.CharacterEquipmentSummary]: CharacterEquipmentSummary
   // Character Hunter Pets APi
-  [ProfileEndpoints.CharacterHunterPetsSummary]: CharacterHunterPetsSummary;
+  [ProfileEndpoints.CharacterHunterPetsSummary]: CharacterHunterPetsSummary
   // Character Media Summary
-  [ProfileEndpoints.CharacterMediaSummary]: CharacterMediaSummary;
+  [ProfileEndpoints.CharacterMediaSummary]: CharacterMediaSummary
   // Character Mythic Keystone Profile API
-  [ProfileEndpoints.CharacterMythicKeystoneProfileIndex]: CharacterMythicKeystoneProfileIndex;
-  [ProfileEndpoints.CharacterMythicKeystoneSeasonDetails]: CharacterMythicKeystoneSeasonDetails;
+  [ProfileEndpoints.CharacterMythicKeystoneProfileIndex]: CharacterMythicKeystoneProfileIndex
+  [ProfileEndpoints.CharacterMythicKeystoneSeasonDetails]: CharacterMythicKeystoneSeasonDetails
   // Character Profile Summary
-  [ProfileEndpoints.CharacterProfileSummary]: CharacterProfileSummary;
-  [ProfileEndpoints.CharacterProfileStatus]: CharacterProfileStatus;
+  [ProfileEndpoints.CharacterProfileSummary]: CharacterProfileSummary
+  [ProfileEndpoints.CharacterProfileStatus]: CharacterProfileStatus
   // Character PvP API
-  [ProfileEndpoints.CharacterPvPBracketStatistics]: CharacterPvPBracketStatistics;
-  [ProfileEndpoints.CharacterPvPSummary]: CharacterPvPSummary;
+  [ProfileEndpoints.CharacterPvPBracketStatistics]: CharacterPvPBracketStatistics
+  [ProfileEndpoints.CharacterPvPSummary]: CharacterPvPSummary
   // Character Quests API
-  [ProfileEndpoints.CharacterQuests]: CharacterQuests;
-  [ProfileEndpoints.CharacterCompletedQuests]: CharacterCompletedQuests;
+  [ProfileEndpoints.CharacterQuests]: CharacterQuests
+  [ProfileEndpoints.CharacterCompletedQuests]: CharacterCompletedQuests
   // Character Reputations API
-  [ProfileEndpoints.CharacterReputationsSummary]: CharacterReputationsSummary;
+  [ProfileEndpoints.CharacterReputationsSummary]: CharacterReputationsSummary
   // Character Specializations API
-  [ProfileEndpoints.CharacterSpecializationsSummary]: CharacterSpecializationsSummary;
+  [ProfileEndpoints.CharacterSpecializationsSummary]: CharacterSpecializationsSummary
   // Character Statistics API
-  [ProfileEndpoints.CharacterStatisticsSummary]: CharacterStatisticsSummary;
+  [ProfileEndpoints.CharacterStatisticsSummary]: CharacterStatisticsSummary
   // Character Titles API
-  [ProfileEndpoints.CharacterTitlesSummary]: CharacterTitlesSummary;
+  [ProfileEndpoints.CharacterTitlesSummary]: CharacterTitlesSummary
   // Guild API
-  [ProfileEndpoints.Guild]: Guild;
-  [ProfileEndpoints.GuildActivity]: GuildActivity;
-  [ProfileEndpoints.GuildAchievements]: GuildAchievements;
-  [ProfileEndpoints.GuildRoster]: GuildRoster;
-};
+  [ProfileEndpoints.Guild]: Guild
+  [ProfileEndpoints.GuildActivity]: GuildActivity
+  [ProfileEndpoints.GuildAchievements]: GuildAchievements
+  [ProfileEndpoints.GuildRoster]: GuildRoster
+}

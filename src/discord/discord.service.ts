@@ -1,42 +1,36 @@
-import { EntityRepository } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Channel, Client, GuildMember } from 'discord.js';
-import { PluginConfig } from './discord-config.class';
-import { DiscordConfig } from './discord-plugin.entity';
-import {
-  CommandMeta,
-  GroupMeta,
-  InjectClient,
-  LoopMeta,
-  PluginOptions,
-} from './discord.decorators';
-import { CommandMatch, GroupMatch } from './interfaces/command-match.interface';
-import { DiscordPlugin } from './plugins/plugin.class';
-import { DISCORD_PREFIX } from '../app.constants';
+import { EntityRepository } from '@mikro-orm/core'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { Channel, Client, GuildMember } from 'discord.js'
+import { PluginConfig } from './discord-config.class'
+import { DiscordConfig } from './discord-plugin.entity'
+import { CommandMeta, GroupMeta, InjectClient, LoopMeta, PluginOptions } from './discord.decorators'
+import { CommandMatch, GroupMatch } from './interfaces/command-match.interface'
+import { DiscordPlugin } from './plugins/plugin.class'
+import { DISCORD_PREFIX } from '../app.constants'
 
 export interface PluginMap {
-  name: string;
-  options: PluginOptions;
-  instance: DiscordPlugin;
-  commands: PluginCommandMap;
-  groups: PluginGroupMap;
-  loops: PluginLoopMap;
+  name: string
+  options: PluginOptions
+  instance: DiscordPlugin
+  commands: PluginCommandMap
+  groups: PluginGroupMap
+  loops: PluginLoopMap
 }
 
 export interface GroupMapMeta extends GroupMeta {
-  commands: PluginCommandMap;
+  commands: PluginCommandMap
 }
 
-export type PluginCommandMap = Map<string, CommandMeta>;
-export type PluginGroupMap = Map<string, GroupMapMeta>;
-export type PluginLoopMap = Map<string, LoopMeta>;
+export type PluginCommandMap = Map<string, CommandMeta>
+export type PluginGroupMap = Map<string, GroupMapMeta>
+export type PluginLoopMap = Map<string, LoopMeta>
 
 @Injectable()
 export class DiscordService {
-  public readonly prefix: string;
-  public readonly plugins = new Map<string, PluginMap>();
+  public readonly prefix: string
+  public readonly plugins = new Map<string, PluginMap>()
 
   constructor(
     @InjectRepository(DiscordConfig)
@@ -44,7 +38,7 @@ export class DiscordService {
     private readonly config: ConfigService,
     @InjectClient() public readonly client: Client,
   ) {
-    this.prefix = config.get(DISCORD_PREFIX);
+    this.prefix = config.get(DISCORD_PREFIX)
   }
 
   /**
@@ -52,7 +46,7 @@ export class DiscordService {
    * @param identifier
    */
   public getConfig<T, K = null>(identifier: string): PluginConfig<T, K> {
-    return new PluginConfig<T, K>(identifier, this.pluginRepository);
+    return new PluginConfig<T, K>(identifier, this.pluginRepository)
   }
 
   /**
@@ -65,27 +59,27 @@ export class DiscordService {
     commands: CommandMeta[] = [],
     loops: LoopMeta[] = [],
   ): void {
-    const commandCollection: PluginCommandMap = new Map();
-    const groupCollection: PluginGroupMap = new Map();
-    const loopCollection: PluginLoopMap = new Map();
+    const commandCollection: PluginCommandMap = new Map()
+    const groupCollection: PluginGroupMap = new Map()
+    const loopCollection: PluginLoopMap = new Map()
 
-    loops.map(loop => loopCollection.set(loop.name, { ...loop }));
+    loops.map(loop => loopCollection.set(loop.name, { ...loop }))
 
     groups.map(group => {
-      groupCollection.set(group.name, { ...group, commands: new Map() });
-    });
+      groupCollection.set(group.name, { ...group, commands: new Map() })
+    })
 
     commands.map(command => {
       if (command.group) {
-        const group = groupCollection.get(command.group);
+        const group = groupCollection.get(command.group)
 
-        if (!group) throw new InternalServerErrorException(`Unknown plugin group ${command.group}`);
+        if (!group) throw new InternalServerErrorException(`Unknown plugin group ${command.group}`)
 
-        group.commands.set(command.name, command);
+        group.commands.set(command.name, command)
       } else {
-        commandCollection.set(command.name, command);
+        commandCollection.set(command.name, command)
       }
-    });
+    })
 
     this.plugins.set(options.name, {
       name: options.name,
@@ -94,7 +88,7 @@ export class DiscordService {
       groups: groupCollection,
       commands: commandCollection,
       loops: loopCollection,
-    });
+    })
   }
 
   /**
@@ -103,35 +97,35 @@ export class DiscordService {
    */
   public getCommandOrGroup(args: string[]): CommandMatch | GroupMatch {
     for (const [name, plugin] of this.plugins) {
-      const command = plugin.commands.get(args[0]);
+      const command = plugin.commands.get(args[0])
 
       if (command) {
-        const method = plugin.instance[command.method].bind(plugin.instance);
-        return { name, plugin, method, command, depth: 1 };
+        const method = plugin.instance[command.method].bind(plugin.instance)
+        return { name, plugin, method, command, depth: 1 }
       }
 
-      const group = plugin.groups.get(args[0]);
+      const group = plugin.groups.get(args[0])
 
       if (group) {
-        const groupMethod = plugin.instance[group.method].bind(plugin.instance);
+        const groupMethod = plugin.instance[group.method].bind(plugin.instance)
 
         // Send the help command for a command group.
-        if (args.length === 1) return { name, plugin, method: groupMethod, group, depth: 1 };
+        if (args.length === 1) return { name, plugin, method: groupMethod, group, depth: 1 }
 
         // Otherwise, try to find the command in the group.
-        const command = group.commands.get(args[1]);
-        const commandMethod = plugin.instance[command.method].bind(plugin.instance);
+        const command = group.commands.get(args[1])
+        const commandMethod = plugin.instance[command.method].bind(plugin.instance)
 
-        if (command) return { name, plugin, command, method: commandMethod, depth: 2 };
+        if (command) return { name, plugin, command, method: commandMethod, depth: 2 }
       }
     }
   }
 
   public getGuildMember(user_id: string): Promise<GuildMember> {
-    return this.client.guilds.cache.get(this.config.get('DISCORD_GUILD_ID')).members.fetch(user_id);
+    return this.client.guilds.cache.get(this.config.get('DISCORD_GUILD_ID')).members.fetch(user_id)
   }
 
   public getGuildChannel(id: string): Channel {
-    return this.client.channels.cache.get(id);
+    return this.client.channels.cache.get(id)
   }
 }

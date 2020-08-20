@@ -1,15 +1,15 @@
-import { IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator'
 
 export class UpdateSlideDto {
   @IsOptional()
-  readonly image?: string;
+  readonly image?: string
 
   @IsOptional()
-  readonly title?: string;
+  readonly title?: string
 
   @IsOptional()
-  readonly subtitle?: string;
+  readonly subtitle?: string
 
   @IsOptional()
-  readonly link?: string;
+  readonly link?: string
 }

@@ -1,14 +1,14 @@
-import { IsEnum, IsString } from 'class-validator';
-import { RealmSlug } from '../enums/realm.enum';
-import { Region } from '../enums/region.enum';
+import { IsEnum, IsString } from 'class-validator'
+import { RealmSlug } from '../enums/realm.enum'
+import { Region } from '../enums/region.enum'
 
 export class FindGuildDto {
   @IsString()
-  name: string;
+  name: string
 
   @IsEnum(RealmSlug)
-  realm: RealmSlug;
+  realm: RealmSlug
 
   @IsEnum(Region)
-  region: Region;
+  region: Region
 }

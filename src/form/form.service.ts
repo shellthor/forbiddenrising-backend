@@ -1,9 +1,9 @@
-import { EntityRepository } from '@mikro-orm/core';
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { CreateFormDto } from './dto/create-form.dto';
-import { UpdateFormDto } from './dto/update-form.dto';
-import { Form } from './form.entity';
+import { EntityRepository } from '@mikro-orm/core'
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { CreateFormDto } from './dto/create-form.dto'
+import { UpdateFormDto } from './dto/update-form.dto'
+import { Form } from './form.entity'
 
 @Injectable()
 export class FormService {
@@ -18,18 +18,18 @@ export class FormService {
    * @param createFormDto properties for the form
    */
   async create(createFormDto: CreateFormDto): Promise<Form> {
-    const form = this.formRepository.create(createFormDto);
+    const form = this.formRepository.create(createFormDto)
 
-    await this.formRepository.persistAndFlush(form);
+    await this.formRepository.persistAndFlush(form)
 
-    return form;
+    return form
   }
 
   /**
    * Finds all forms.
    */
   async findAll(): Promise<Form[]> {
-    return this.formRepository.findAll();
+    return this.formRepository.findAll()
   }
 
   /**
@@ -38,7 +38,7 @@ export class FormService {
    * @param id id of the form
    */
   async findOne(id: number): Promise<Form> {
-    return this.formRepository.findOneOrFail(id);
+    return this.formRepository.findOneOrFail(id)
   }
 
   /**
@@ -48,13 +48,13 @@ export class FormService {
    * @param updateFormDto properties to update
    */
   async update(id: number, updateFormDto: UpdateFormDto): Promise<Form> {
-    const form = await this.formRepository.findOneOrFail(id);
+    const form = await this.formRepository.findOneOrFail(id)
 
-    form.assign(updateFormDto);
+    form.assign(updateFormDto)
 
-    await this.formRepository.flush();
+    await this.formRepository.flush()
 
-    return form;
+    return form
   }
 
   /**
@@ -63,12 +63,12 @@ export class FormService {
    * @param id Form id
    */
   async delete(id: number): Promise<Form> {
-    const form = await this.formRepository.findOneOrFail(id);
+    const form = await this.formRepository.findOneOrFail(id)
 
-    this.formRepository.remove(form);
+    this.formRepository.remove(form)
 
-    await this.formRepository.flush();
+    await this.formRepository.flush()
 
-    return form;
+    return form
   }
 }

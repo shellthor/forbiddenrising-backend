@@ -1,10 +1,10 @@
-import { IsEnum, IsOptional } from 'class-validator';
-import { GameDataEndpoint } from '../enums/game-data-api.enum';
+import { IsEnum, IsOptional } from 'class-validator'
+import { GameDataEndpoint } from '../enums/game-data-api.enum'
 
 export class GameDataAggregateDto {
   @IsEnum(GameDataEndpoint, { each: true })
-  endpoints: GameDataEndpoint[];
+  endpoints: GameDataEndpoint[]
 
   @IsOptional()
-  param?: string | number;
+  param?: string | number
 }

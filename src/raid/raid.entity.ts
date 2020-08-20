@@ -1,72 +1,72 @@
-import { Entity, Enum, PrimaryKey, Property, WrappedEntity } from '@mikro-orm/core';
-import { DecimalType } from '../../config/types/decimal.type';
-import { Expansion } from './enums/expansion.enum';
+import { Entity, Enum, PrimaryKey, Property, WrappedEntity } from '@mikro-orm/core'
+import { DecimalType } from '../../config/types/decimal.type'
+import { Expansion } from './enums/expansion.enum'
 
 @Entity()
 export class Raid {
   constructor(slug: string) {
-    this.slug = slug;
+    this.slug = slug
   }
 
   @PrimaryKey()
-  id!: number;
+  id!: number
 
   @Property({ nullable: true })
-  name?: string;
+  name?: string
 
   @Property({ unique: true })
-  slug!: string;
+  slug!: string
 
   @Enum({ items: () => Expansion, nullable: true })
-  expansion?: Expansion;
+  expansion?: Expansion
 
   @Property({ nullable: true })
-  background?: string;
+  background?: string
 
   @Property({ type: DecimalType })
-  progress!: number;
+  progress!: number
 
   @Property()
-  difficulty!: string;
+  difficulty!: string
 
   @Property()
-  world!: number;
+  world!: number
 
   @Property()
-  region!: number;
+  region!: number
 
   @Property()
-  realm!: number;
+  realm!: number
 
   @Property()
-  summary!: string;
+  summary!: string
 
   @Property()
-  bosses!: number;
+  bosses!: number
 
   @Property()
-  normal_bosses_killed!: number;
+  normal_bosses_killed!: number
 
   @Property()
-  heroic_bosses_killed!: number;
+  heroic_bosses_killed!: number
 
   @Property()
-  mythic_bosses_killed!: number;
+  mythic_bosses_killed!: number
 
   @Property({ index: true })
-  isFeatured = false;
+  isFeatured = false
 
   @Property()
-  order = 0;
+  order = 0
 
   @Property()
-  locked = false;
+  locked = false
 
   @Property()
-  createdAt: Date = new Date();
+  createdAt: Date = new Date()
 
   @Property({ onUpdate: () => new Date() })
-  updatedAt: Date = new Date();
+  updatedAt: Date = new Date()
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

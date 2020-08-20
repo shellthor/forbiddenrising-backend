@@ -1,4 +1,4 @@
-import { RaiderIOCharacter } from '../../src/raiderIO/interfaces/raider-io-character.interface';
+import { RaiderIOCharacter } from '../../src/raiderIO/interfaces/raider-io-character.interface'
 
 const CharacterRaiderIOMock = (name: string): RaiderIOCharacter => ({
   name: 'Tesali',
@@ -787,6 +787,6 @@ const CharacterRaiderIOMock = (name: string): RaiderIOCharacter => ({
       mythic_bosses_killed: 0,
     },
   },
-});
+})
 
-export default CharacterRaiderIOMock;
+export default CharacterRaiderIOMock
