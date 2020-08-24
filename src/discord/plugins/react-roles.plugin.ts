@@ -17,33 +17,29 @@ export interface ReactRoles {
 export class ReactRolesPlugin extends DiscordPlugin {
   private readonly messages = new Map<string, ReactRoles>([
     [
-      '745426369411809331',
+      '742157450454630491',
       {
         unique: true,
         emojis: new Map([
-          ['id of emoji', { id: '', name: 'Death Knight' }],
-          ['', { id: 'id of role', name: 'Demon Hunter' }],
-          ['', { id: '', name: 'Druid' }],
-          ['', { id: '', name: 'Hunter' }],
-          ['', { id: '', name: 'Mage' }],
-          ['', { id: '', name: 'Monk' }],
-          ['', { id: '', name: 'Paladin' }],
-          ['', { id: '', name: 'Priest' }],
-          ['', { id: '', name: 'Rogue' }],
-          ['', { id: '', name: 'Shaman' }],
-          ['', { id: '', name: 'Warlock' }],
-          ['', { id: '', name: 'Warrior' }],
+          ['632617592611274752', { id: '632616301826932747', name: 'Death Knight' }],
+          ['632618304447447048', { id: '632618133651324938', name: 'Demon Hunter' }],
+          ['632618734208417814', { id: '632618490569949228', name: 'Druid' }],
+          ['632618767809118248', { id: '632618600640938025', name: 'Hunter' }],
+          ['632618794451468298', { id: '632619008348389384', name: 'Mage' }],
+          ['632618822532333598', { id: '632619378512232459', name: 'Monk' }],
+          ['632618848520110112', { id: '632619096890146877', name: 'Paladin' }],
+          ['632618870569697309', { id: '632619183905046529', name: 'Priest' }],
+          ['632618898012766228', { id: '632619239001423924', name: 'Rogue' }],
+          ['632618916669292565', { id: '632619510423355392', name: 'Shaman' }],
+          ['632618942669520926', { id: '632619582103879692', name: 'Warlock' }],
+          ['632618967399137280', { id: '632619653012914177', name: 'Warrior' }],
         ]),
       },
     ],
   ])
 
   @Event(DiscordEvent.MessageReactionAdd)
-  async onMessageReactionAdd(
-    _client: Client,
-    reaction: MessageReaction,
-    { id: uid, bot }: User,
-  ): Promise<MessageReaction> {
+  async onMessageReactionAdd(_client: Client, reaction: MessageReaction, { id: uid, bot }: User) {
     if (bot) return
 
     // We only care about added reactions to the class message.
@@ -81,11 +77,7 @@ export class ReactRolesPlugin extends DiscordPlugin {
   }
 
   @Event(DiscordEvent.MessageReactionRemove)
-  async onMessageReactionRemove(
-    _client: Client,
-    reaction: MessageReaction,
-    { id: uid }: User,
-  ): Promise<void> {
+  async onMessageReactionRemove(_client: Client, reaction: MessageReaction, { id: uid }: User) {
     // We only care about added reactions to the class message.
     if (!this.messages.has(reaction.message.id)) return
 

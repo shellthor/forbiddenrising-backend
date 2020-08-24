@@ -15,20 +15,19 @@ export class SettingsPlugin {
   }
 
   @CommandGroup({ name: 'set', description: 'Configure bot settings.' })
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  set(): void {}
+  set() {}
 
   @Command({
     name: 'embedcolor',
     group: 'set',
     description: 'Sets the default embed color.',
   })
-  async setEmbedColor(ctx: Context, color: string): Promise<void> {
+  async setEmbedColor(ctx: Context, color: string) {
     await this.config.setGlobal({ embedColor: color })
     await ctx.tick()
   }
 
-  async getEmbedColor(): Promise<number> {
+  async getEmbedColor() {
     return (await this.config.getGlobalConfig()).embedColor
   }
 
@@ -37,7 +36,7 @@ export class SettingsPlugin {
     group: 'set',
     description: 'Sets the watching status.',
   })
-  async setWatching(ctx: Context, status: string): Promise<void> {
+  async setWatching(ctx: Context, status: string) {
     await ctx.client.user.setActivity({ name: status, type: 'WATCHING' })
   }
 
@@ -46,7 +45,7 @@ export class SettingsPlugin {
     group: 'set',
     description: 'Sets the playing status.',
   })
-  async setPlaying(ctx: Context, status: string): Promise<void> {
+  async setPlaying(ctx: Context, status: string) {
     await ctx.client.user.setActivity({ name: status, type: 'PLAYING' })
   }
 }

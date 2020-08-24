@@ -15,7 +15,7 @@ export class ReactionsPlugin extends DiscordPlugin {
   }
 
   @Event(DiscordEvent.Message)
-  async onMessage(_client: Client, message: Message): Promise<void> {
+  async onMessage(_client: Client, message: Message) {
     // Do not care about partial messages.
     if (message.partial) return
 

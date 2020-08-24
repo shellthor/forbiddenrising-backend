@@ -1,5 +1,5 @@
 import { BullModule } from '@nestjs/bull'
-import { HttpModule, Module } from '@nestjs/common'
+import { CacheModule, HttpModule, Module } from '@nestjs/common'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { RaiderIOService } from '../raiderIO/raiderIO.service'
 import { RaidController } from './raid.controller'
@@ -13,6 +13,7 @@ import { RaidService } from './raid.service'
     MikroOrmModule.forFeature({ entities: [Raid] }),
     BullModule.registerQueue({ name: 'raid' }),
     HttpModule,
+    CacheModule.register(),
   ],
   controllers: [RaidController],
   providers: [RaidService, RaiderIOService, RaidQueue, RaidScheduler],

@@ -65,7 +65,7 @@ export class CharacterService {
    * Rank first and name alphabetized.
    * @param ranks
    */
-  findRoster(ranks: number[] = [0, 1, 3, 4, 5]): Promise<GuildCharacter[]> {
+  findRoster(ranks: number[] = [0, 3, 5]): Promise<GuildCharacter[]> {
     return this.characterRepository.find(
       { guild_rank: { $in: ranks } },
       {

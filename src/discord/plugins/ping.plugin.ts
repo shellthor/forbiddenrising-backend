@@ -11,7 +11,7 @@ import { DiscordPlugin } from './plugin.class'
 @Plugin('Ping')
 export class PingPlugin extends DiscordPlugin {
   @Command({ name: 'ping', description: 'Replies with pong!' })
-  async pong(ctx: Context): Promise<void> {
+  async pong(ctx: Context) {
     await ctx.send('Pong!')
   }
 }

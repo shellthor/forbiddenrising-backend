@@ -6,13 +6,12 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
     "target": "ESNext",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true
   },
-  "include": ["src", "test", "config/types/enum-array.type.ts", "config/types/decimal.type.ts"],
+  "include": ["src", "config/types/enum-array.type.ts", "config/types/decimal.type.ts"],
   "exclude": ["node_modules", "dist", "uploads"]
 }

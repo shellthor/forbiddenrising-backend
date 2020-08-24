@@ -1,5 +1,5 @@
 import { HttpService, Injectable, Logger, UnauthorizedException } from '@nestjs/common'
-import { Message, MessageEmbed, TextChannel } from 'discord.js'
+import { MessageEmbed, TextChannel } from 'discord.js'
 import { chunk, isEqual, partition } from 'lodash'
 import moment from 'moment'
 import { sleep } from '../../app.utils'
@@ -56,15 +56,14 @@ export class WarcraftLogsPlugin extends DiscordPlugin {
   }
 
   @CommandGroup({ name: 'wcl', description: 'WarcraftLogs related commands.' })
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  wcl(): void {}
+  wcl() {}
 
   @Command({
     name: 'api',
     group: 'wcl',
     description: 'Sets the guild WarcraftLogs API key.',
   })
-  async api(ctx: Context, key: string): Promise<void> {
+  async api(ctx: Context, key: string) {
     try {
       const reports = await this.getReports(key)
 
@@ -88,7 +87,7 @@ export class WarcraftLogsPlugin extends DiscordPlugin {
     group: 'wcl',
     description: 'Sets the channel to send log announcements to.',
   })
-  async setChannel(ctx: Context, cid: string): Promise<Message> {
+  async setChannel(ctx: Context, cid: string) {
     const channel = ctx.message.guild.channels.cache.get(cid)
 
     if (!channel) {
@@ -108,7 +107,7 @@ export class WarcraftLogsPlugin extends DiscordPlugin {
     name: 'log',
     description: 'Retrieves the embed for a log by its id.',
   })
-  async log(ctx: Context, id: string): Promise<Message> {
+  async log(ctx: Context, id: string) {
     const { key } = await this.config.getGlobalConfig()
 
     if (!key) {
@@ -133,7 +132,7 @@ export class WarcraftLogsPlugin extends DiscordPlugin {
     name: 'logs',
     description: 'Retrieves the latest logs for the guild.',
   })
-  async logs(ctx: Context): Promise<Message> {
+  async logs(ctx: Context) {
     const { key } = await this.config.getGlobalConfig()
 
     if (!key) {
@@ -158,7 +157,7 @@ export class WarcraftLogsPlugin extends DiscordPlugin {
     }
   }
 
-  public async checkLogs(): Promise<void> {
+  public async checkLogs() {
     const { key } = await this.config.getGlobalConfig()
 
     if (!key) return
@@ -224,7 +223,7 @@ export class WarcraftLogsPlugin extends DiscordPlugin {
   }
 
   @Loop('LogRetrieval')
-  public async loop(): Promise<void> {
+  public async loop() {
     while (true) {
       await this.checkLogs().catch(e => this.logger.error(e.message, e.stack))
 
@@ -308,7 +307,7 @@ export class WarcraftLogsPlugin extends DiscordPlugin {
     const { report, instances } = await this.getReportInfo(id)
 
     const embed = new MessageEmbed({
-      title: 'The Forbidden Rising WarcraftLogs',
+      title: 'Forbidden WarcraftLogs',
       description: `*${report.title} recorded by ${report.owner}*`,
       url: `https://www.warcraftlogs.com/reports/${id}`,
       color: await this.settings.getEmbedColor(),

@@ -1,8 +1,8 @@
 import { EntityRepository } from '@mikro-orm/core'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { Channel, Client, GuildMember } from 'discord.js'
+import { Client } from 'discord.js'
+import { InjectRepository } from '@mikro-orm/nestjs'
 import { PluginConfig } from './discord-config.class'
 import { DiscordConfig } from './discord-plugin.entity'
 import { CommandMeta, GroupMeta, InjectClient, LoopMeta, PluginOptions } from './discord.decorators'
@@ -45,7 +45,7 @@ export class DiscordService {
    * Builds a new PluginConfig class for managing settings for a plugin.
    * @param identifier
    */
-  public getConfig<T, K = null>(identifier: string): PluginConfig<T, K> {
+  public getConfig<T, K = null>(identifier: string) {
     return new PluginConfig<T, K>(identifier, this.pluginRepository)
   }
 
@@ -58,7 +58,7 @@ export class DiscordService {
     groups: GroupMeta[] = [],
     commands: CommandMeta[] = [],
     loops: LoopMeta[] = [],
-  ): void {
+  ) {
     const commandCollection: PluginCommandMap = new Map()
     const groupCollection: PluginGroupMap = new Map()
     const loopCollection: PluginLoopMap = new Map()
@@ -121,11 +121,11 @@ export class DiscordService {
     }
   }
 
-  public getGuildMember(user_id: string): Promise<GuildMember> {
+  public getGuildMember(user_id: string) {
     return this.client.guilds.cache.get(this.config.get('DISCORD_GUILD_ID')).members.fetch(user_id)
   }
 
-  public getGuildChannel(id: string): Channel {
+  public getGuildChannel(id: string) {
     return this.client.channels.cache.get(id)
   }
 }

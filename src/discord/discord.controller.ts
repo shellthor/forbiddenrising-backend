@@ -1,5 +1,4 @@
 import { Controller, Get, Param } from '@nestjs/common'
-import { GuildMember } from 'discord.js'
 import { Auth } from '../auth/decorators/auth.decorator'
 import { DiscordService } from './discord.service'
 
@@ -9,7 +8,7 @@ export class DiscordController {
 
   @Auth('discord', 'read:any')
   @Get('member/:id')
-  async getMember(@Param('id') id: string): Promise<GuildMember> {
+  async getMember(@Param('id') id: string) {
     return this.discord.getGuildMember(id)
   }
 }

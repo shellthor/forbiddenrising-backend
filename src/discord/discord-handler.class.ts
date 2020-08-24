@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { Guild, GuildChannel, GuildMember, Message, Role } from 'discord.js'
+import { Guild, Message } from 'discord.js'
 import { DISCORD_PREFIX } from '../app.constants'
 import { CommandParamtypes } from './decorators/mention.decorator'
 import { Context } from './discord.context'
@@ -35,7 +35,7 @@ export class DiscordHandler {
    *
    * @param message message received from the onMessage event
    */
-  public async handle(message: Message): Promise<void> {
+  public async handle(message: Message) {
     if (this.isInvalidMessage(message)) return
 
     const args = this.getMessageTokens(message)
@@ -155,7 +155,7 @@ export class DiscordHandler {
    * @param argument argument string
    * @param guild Discord guild from the message
    */
-  public getMemberMention(argument: string, guild: Guild): GuildMember {
+  public getMemberMention(argument: string, guild: Guild) {
     const matches = argument.match(/<@!?(\d{17,19})>/)
 
     if (!matches) throw new BadCommandArgsException()
@@ -174,7 +174,7 @@ export class DiscordHandler {
    * @param argument argument string
    * @param guild Discord guild from the message
    */
-  public getChannelMention(argument: string, guild: Guild): GuildChannel {
+  public getChannelMention(argument: string, guild: Guild) {
     const matches = argument.match(/<#(\d{17,19})>/)
 
     if (!matches) throw new BadCommandArgsException()
@@ -193,7 +193,7 @@ export class DiscordHandler {
    * @param argument argument string
    * @param guild Discord guild from the message
    */
-  public getRoleMention(argument: string, guild: Guild): Role {
+  public getRoleMention(argument: string, guild: Guild) {
     const matches = argument.match(/<@&(\d{17,19})>/)
 
     if (!matches) throw new BadCommandArgsException()
@@ -219,7 +219,7 @@ export class DiscordHandler {
     ctx: Context,
     match: CommandMatch | GroupMatch,
     message: Message,
-  ): Promise<Message> | Promise<void> {
+  ) {
     if (error instanceof BadCommandArgsException) {
       return this.help.sendCommandHelp(ctx, (match as CommandMatch).command)
     }

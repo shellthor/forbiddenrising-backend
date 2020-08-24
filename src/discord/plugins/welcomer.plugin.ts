@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { Client, Guild, GuildMember, Message, MessageEmbed, TextChannel } from 'discord.js'
+import { Client, Guild, GuildMember, MessageEmbed, TextChannel } from 'discord.js'
 import { sample } from 'lodash'
 import moment from 'moment'
 import { FormSubmissionStatus } from '../../form-submission/enums/form-submission-status.enum'
@@ -46,15 +46,14 @@ export class WelcomerPlugin extends DiscordPlugin {
   }
 
   @CommandGroup({ name: 'welcome' })
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  welcome(): void {}
+  welcome() {}
 
   @Command({
     name: 'channel',
     group: 'welcome',
     description: 'Sets the welcome channel',
   })
-  async setChannel(ctx: Context, cid: string): Promise<Message> {
+  async setChannel(ctx: Context, cid: string) {
     const channel = ctx.message.guild.channels.cache.get(cid)
 
     if (!channel) {
@@ -71,7 +70,7 @@ export class WelcomerPlugin extends DiscordPlugin {
   }
 
   @Event(DiscordEvent.GuildMemberAdd)
-  async onGuildMemberAdd(client: Client, member: GuildMember): Promise<void> {
+  async onGuildMemberAdd(client: Client, member: GuildMember) {
     const { channel: cid } = await this.config.getGuildConfig(member.guild)
 
     // Plugin is unitialized for the guild.
@@ -92,7 +91,7 @@ export class WelcomerPlugin extends DiscordPlugin {
       const embed = new MessageEmbed({
         title: 'Welcome Applicant',
         description:
-          'Thank you for applying to The Forbidden Rising. As long as you remain in our Discord you will be notified of any changes made to your application. If you have any questions about your application or the guild, feel free to message the GM, Hera/Zindagee.',
+          'Thank you for applying to The Forbidden Rising. So long as you remain in your Discord you will be notified of any changes made to your application. If you have any questions about your application or the guild, feel free to message the GM, Duckie.',
         color: 0xc328ff,
         fields: [
           {
@@ -113,7 +112,7 @@ export class WelcomerPlugin extends DiscordPlugin {
   }
 
   @Event(DiscordEvent.GuildMemberRemove)
-  async onGuildMemberRemove(client: Client, member: GuildMember): Promise<void> {
+  async onGuildMemberRemove(client: Client, member: GuildMember) {
     const { channel: cid } = await this.config.getGuildConfig(member.guild)
 
     // Plugin is unitialized for the guild.

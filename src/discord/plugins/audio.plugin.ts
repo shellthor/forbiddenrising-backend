@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common'
 import {
-  Message,
   MessageEmbed,
   StreamDispatcher,
   TextChannel,
@@ -39,9 +38,13 @@ export class AudioPlugin extends DiscordPlugin {
   private queue: AudioQueue
 
   @Command({ name: 'play', description: 'Plays a song from a YouTube url' })
-  async playCommand(ctx: Context, url: string): Promise<Message> {
+  async playCommand(ctx: Context, url: string) {
     if (!ctx.guild) {
       return ctx.message.reply('I cannot play music in DMs.')
+    }
+
+    if (!ctx.message.member.voice.channel) {
+      return ctx.message.reply('You must be in a voice channel first.')
     }
 
     const permissions = ctx.message.member.voice.channel.permissionsFor(ctx.message.guild.me)
@@ -107,7 +110,7 @@ export class AudioPlugin extends DiscordPlugin {
   }
 
   @Command({ name: 'stop', description: 'Stops the bot and erases the queue' })
-  async stopCommand(ctx: Context): Promise<Message> {
+  async stopCommand(ctx: Context) {
     if (!ctx.message.guild) {
       return ctx.message.reply('This command is only available in servers.')
     }
@@ -128,7 +131,7 @@ export class AudioPlugin extends DiscordPlugin {
     name: 'volume',
     description: 'Sets the volume of the bot from 0 to 200',
   })
-  async setVolume(ctx: Context, volume: string): Promise<void | Message> {
+  async setVolume(ctx: Context, volume: string) {
     const volumeNum = +volume
 
     if (isNaN(volumeNum) || volumeNum < 0 || volumeNum > 200) {

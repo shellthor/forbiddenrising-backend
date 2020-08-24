@@ -27,7 +27,7 @@ export class Context {
   /**
    * Instructs the bot to add a checkmark emoji to the initiating command.
    */
-  public async tick(): Promise<void> {
+  public async tick() {
     await this.message.react('✅')
   }
 
@@ -45,14 +45,14 @@ export class Context {
   /**
    * Formats input text in a Discord codeblock with the specified type.
    */
-  public formatCode(data: string | Record<string, any>, type: string): string {
+  public formatCode(data: string | Record<string, any>, type: string) {
     return `\`\`\`${type}\n${JSON.stringify(data, null, 2)}\`\`\``
   }
 
   /**
    * Sends multiple embeds with emoji-based pagination and configurable timeout.
    */
-  public async paginate(embeds: MessageEmbed[], timeout = 120000): Promise<Message> {
+  public async paginate(embeds: MessageEmbed[], timeout = 120000) {
     let page = 0
 
     const currentPage = await this.send(embeds[page])

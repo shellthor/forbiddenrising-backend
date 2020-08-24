@@ -28,7 +28,7 @@ export class DiscordQueue {
     embed.setDescription(
       `The guild was notified of your application and it is now under review.
 
-      If the status of your application changes I will notify you so long as you remain in the *The Forbidden Rising* Discord.`,
+      If the status of your application changes I will notify you so long as you remain in the *Forbidden Rising* Discord.`,
     )
     embed.addField(
       'Links',
@@ -50,7 +50,7 @@ export class DiscordQueue {
     if (job.data.status === FormSubmissionStatus.Approved) {
       embed.setTitle('Application Approved')
       embed.setDescription(
-        `Your application was reviewed and you are approved to trial with the guild. If you haven't already discussed the timeline, or other questions you may have, with \`Hera/Zindagee\` please do so we may get you into the raid as soon as possible.`,
+        `Your application was reviewed and you are approved to trial with the guild. If you haven't already discussed the timeline, or other questions you may have, with \`Duckie\` please do so we may get you into the raid as soon as possible.`,
       )
       embed.addField(
         'Notifications',
@@ -68,8 +68,7 @@ export class DiscordQueue {
       )
       embed.addField(
         `Reasoning`,
-        `If you have not spoken with the officers, then this decision is likely the result of a lack of reliable logs, a conflict in raiding goals or mentality, or the inability to fit you into our current roster or progression goals. You are welcome to apply again in the future. If you have further questions please contact \`Zindagee
-        #7622\` on Discord.`,
+        `If you have not spoken with the officers, then this decision is likely the result of a lack of reliable logs, a conflict in raiding goals or mentality, or the inability to fit you into our current roster or progression goals. You are welcome to apply again in the future. If you have further questions please contact \`Duckies#1999\` on Discord.`,
       )
     }
 

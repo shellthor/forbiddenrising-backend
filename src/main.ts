@@ -36,8 +36,8 @@ async function bootstrap(): Promise<void> {
   app.use(helmet())
   app.use(compression())
 
-  const globalPrefix = config.get<string>('GLOBAL_PREFIX')
-  app.setGlobalPrefix(globalPrefix)
+  // const globalPrefix = config.get<string>('GLOBAL_PREFIX')
+  // app.setGlobalPrefix(globalPrefix)
 
   const options = new DocumentBuilder()
     .setTitle('TFR Api')
@@ -51,7 +51,7 @@ async function bootstrap(): Promise<void> {
   const port = config.get<number>('PORT') || 3333
 
   await app.listen(port, () => {
-    Logger.log(`Listening at http://localhost:${port}/${globalPrefix}`)
+    Logger.log(`Listening at http://localhost:${port}`)
   })
 }
 bootstrap()

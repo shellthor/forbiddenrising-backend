@@ -19,7 +19,7 @@ export class HelpPlugin {
     name: 'help',
     description: 'Shows the description of a command or group',
   })
-  async help(ctx: Context): Promise<void> {
+  async help(ctx: Context) {
     const embed = new MessageEmbed()
     embed.setTitle('TFR Bot Help Menu')
     embed.setColor(0xc328ff)
@@ -51,7 +51,7 @@ export class HelpPlugin {
     return text
   }
 
-  public async sendGroupHelp(ctx: Context, group: GroupMapMeta): Promise<void> {
+  public async sendGroupHelp(ctx: Context, group: GroupMapMeta) {
     const helpText = this.sortHelp(this.buildHelp(group.commands))
 
     const embed = new MessageEmbed()
@@ -64,9 +64,9 @@ export class HelpPlugin {
     await ctx.message.channel.send(embed)
   }
 
-  public async sendCommandHelp(ctx: Context, command: CommandMeta): Promise<void> {
+  public async sendCommandHelp(ctx: Context, command: CommandMeta) {
     const embed = new MessageEmbed({
-      title: 'The Forbidden Rising Help Menu',
+      title: 'Forbidden Help Menu',
       description: `\`${ctx.prefix}${command.name} ${command.syntax || '...arguments'}\``,
       color: await this.settings.getEmbedColor(),
       fields: [{ name: command.name, value: command.description }],

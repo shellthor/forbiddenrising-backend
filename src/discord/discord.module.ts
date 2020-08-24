@@ -37,7 +37,6 @@ import { ReactionsPlugin } from './plugins/reactions.plugin'
 import { SettingsPlugin } from './plugins/settings.plugin'
 import { WarcraftLogsPlugin } from './plugins/warcraftlogs.plugin'
 import { WelcomerPlugin } from './plugins/welcomer.plugin'
-import { DebuggerPlugin } from './plugins/debugger.plugin'
 
 @Module({
   imports: [
@@ -61,7 +60,6 @@ import { DebuggerPlugin } from './plugins/debugger.plugin'
     ReactionsPlugin,
     LoggerPlugin,
     AnnouncePlugin,
-    DebuggerPlugin,
   ],
   controllers: [DiscordController],
   exports: [DiscordService],
@@ -93,7 +91,7 @@ export class DiscordModule implements OnModuleInit {
     @InjectClient() private readonly client: Client,
   ) {}
 
-  async onModuleInit(): Promise<void> {
+  async onModuleInit() {
     await this.getPluginMetadata()
     this.initialize()
   }
@@ -102,7 +100,7 @@ export class DiscordModule implements OnModuleInit {
    * Retrieves the metadata associated with the plugin files and constructs
    * the plugin heirarchy data.
    */
-  async getPluginMetadata(): Promise<void> {
+  async getPluginMetadata() {
     const plugins = await this.discover.providersWithMetaAtKey<PluginOptions>(DISCORD_PLUGIN)
 
     for (const plugin of plugins) {

@@ -4,11 +4,10 @@ import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-discord'
 import { User } from 'src/user/user.entity'
 import { AuthService, DiscordProfile } from '../auth.service'
-import { BlizzardStrategy } from './blizzard.strategy'
 
 @Injectable()
 export class DiscordStrategy extends PassportStrategy(Strategy, 'discord') {
-  private readonly logger: Logger = new Logger(BlizzardStrategy.name)
+  private readonly logger: Logger = new Logger(DiscordStrategy.name)
 
   constructor(private readonly authService: AuthService, config: ConfigService) {
     super({

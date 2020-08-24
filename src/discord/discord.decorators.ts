@@ -239,8 +239,4 @@ function createPluginMethodDecorator<T>(key: any, data: T) {
  * Decorator that injects the Discord client into the provider.
  * When possible, using a context object or service is preferred.
  */
-export const InjectClient = (): ((
-  target: Record<string, unknown>,
-  key: string | symbol,
-  index?: number,
-) => void) => Inject(DISCORD_CLIENT)
+export const InjectClient = () => Inject(DISCORD_CLIENT)

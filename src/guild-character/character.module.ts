@@ -1,5 +1,5 @@
 import { BullModule } from '@nestjs/bull'
-import { Module } from '@nestjs/common'
+import { CacheModule, Module } from '@nestjs/common'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { BlizzardModule } from '../blizzard/blizzard.module'
 import { CharacterController } from './character.controller'
@@ -13,6 +13,7 @@ import { CharacterService } from './character.service'
     MikroOrmModule.forFeature({ entities: [GuildCharacter] }),
     BullModule.registerQueue({ name: 'character' }),
     BlizzardModule,
+    CacheModule.register(),
   ],
   providers: [CharacterService, CharacterQueue, CharacterScheduler],
   exports: [CharacterService, CharacterQueue],

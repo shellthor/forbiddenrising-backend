@@ -14,11 +14,11 @@ export class PluginConfig<K, T = null> {
     private readonly pluginRepository: EntityRepository<DiscordConfig>,
   ) {}
 
-  public registerGlobal(config: T): void {
+  public registerGlobal(config: T) {
     this.templates.global = config
   }
 
-  public registerGuild(config: K): void {
+  public registerGuild(config: K) {
     this.templates.guild = config
   }
 
@@ -54,7 +54,6 @@ export class PluginConfig<K, T = null> {
     return this.config.guilds[guild.id]
   }
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async setGlobal(data: any): Promise<T> {
     if (!this.initialized) {
       await this.fetch()
@@ -88,7 +87,7 @@ export class PluginConfig<K, T = null> {
         options: this.config,
       })
 
-      this.pluginRepository.persist(options)
+      this.pluginRepository.persistLater(options)
     } else {
       options.assign({ options: this.config })
     }

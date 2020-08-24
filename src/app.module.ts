@@ -1,10 +1,9 @@
-import { APP_INTERCEPTOR } from '@nestjs/core'
-import { Module, CacheModule, CacheInterceptor } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { PassportModule } from '@nestjs/passport'
 import { SentryModule } from '@ntegral/nestjs-sentry'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
-import * as redisStore from 'cache-manager-ioredis'
+
 import * as Joi from 'joi'
 import MikroOrmConfig from '../mikro-orm.config'
 
@@ -23,16 +22,11 @@ import { SlideModule } from './slide/slide.module'
 
 @Module({
   imports: [
-    CacheModule.register({
-      store: redisStore,
-      host: 'localhost',
-      port: 6379,
-    }),
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid('development', 'production', 'test').default('development'),
-        PORT: Joi.number().default(3333),
+        PORT: Joi.number().default(3000),
         SENTRY_DSN: Joi.string().required(),
         JWT_SECRET: Joi.string().default('testing'),
         BLIZZARD_CLIENTID: Joi.string().required(),
@@ -83,9 +77,7 @@ import { SlideModule } from './slide/slide.module'
     FormSubmissionModule,
     BlizzardModule,
     CharacterModule,
-
     RaiderIOModule,
   ],
-  providers: [{ provide: APP_INTERCEPTOR, useClass: CacheInterceptor }],
 })
 export class AppModule {}

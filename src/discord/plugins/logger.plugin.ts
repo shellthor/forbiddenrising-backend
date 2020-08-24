@@ -26,15 +26,14 @@ export class LoggerPlugin extends DiscordPlugin {
   }
 
   @CommandGroup({ name: 'logger', description: 'Moderation logger commands' })
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  log(): void {}
+  log() {}
 
   @Command({
     name: 'channel',
     group: 'logger',
     description: 'Sets the channel to send moderation messages to.',
   })
-  async setChannel(ctx: Context, cid: string): Promise<Message> {
+  async setChannel(ctx: Context, cid: string) {
     const channel = ctx.message.guild.channels.cache.get(cid)
 
     if (!channel) {
@@ -55,7 +54,7 @@ export class LoggerPlugin extends DiscordPlugin {
     group: 'logger',
     description: 'Sets the channel to send deleted raiderIO runs to.',
   })
-  async setIOChannel(ctx: Context, cid: string): Promise<Message> {
+  async setIOChannel(ctx: Context, cid: string) {
     const channel = ctx.message.guild.channels.cache.get(cid)
 
     if (!channel) {
@@ -72,7 +71,7 @@ export class LoggerPlugin extends DiscordPlugin {
   }
 
   @Event(DiscordEvent.MessageDelete)
-  async onMessageDelete(client: Client, message: Message): Promise<void> {
+  async onMessageDelete(client: Client, message: Message) {
     if (message.partial) return
 
     const { channel: cid, ioChannel: iocid } = await this.config.getGuildConfig(message.guild)
