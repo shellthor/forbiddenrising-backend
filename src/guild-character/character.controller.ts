@@ -1,7 +1,9 @@
+import { UpdateCharacterDto } from './dto/update-character.dto'
 import { InjectQueue } from '@nestjs/bull'
-import { Controller, Get, Param, CacheTTL } from '@nestjs/common'
+import { Controller, Get, Param, CacheTTL, Patch, Body } from '@nestjs/common'
 import { Queue } from 'bull'
 import { FindCharacterDto } from '../blizzard/dto/find-character.dto'
+import { Auth } from '../auth/decorators/auth.decorator'
 import { GuildCharacter } from './character.entity'
 import { CharacterService } from './character.service'
 
@@ -17,6 +19,22 @@ export class CharacterController {
   @CacheTTL(600)
   getRoster(): Promise<GuildCharacter[]> {
     return this.characterService.findRoster()
+  }
+
+  @Get('roster/raidteam')
+  @CacheTTL(600)
+  getRaidTeam(): Promise<GuildCharacter[]> {
+    return this.characterService.findRaidTeam()
+  }
+
+  @Auth('character', 'update:any')
+  @Patch(':name')
+  async update(
+    @Param() findCharacterDto: FindCharacterDto,
+    @Body() updateCharacterDto: UpdateCharacterDto,
+  ): Promise<GuildCharacter> {
+    const character = await this.characterService.findOne(findCharacterDto)
+    return this.characterService.update(character.id, updateCharacterDto)
   }
 
   @Get('/:region/:realm/:name')

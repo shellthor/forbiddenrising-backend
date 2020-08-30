@@ -152,6 +152,7 @@ export abstract class Character {
     this.average_item_level = data.average_item_level
     this.equipped_item_level = data.equipped_item_level
     this.last_login = new Date(data.last_login_timestamp)
+    this.title = data?.active_title?.display_string
   }
 
   setCharacterMediaSummary(data: ProfileAPI.CharacterMediaSummary): void {

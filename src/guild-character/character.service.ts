@@ -1,11 +1,14 @@
+import { RaiderIOService } from './../raiderIO/raiderIO.service'
+import { UpdateCharacterDto } from './dto/update-character.dto'
 import { EntityRepository } from '@mikro-orm/knex'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { QueryOrder } from '@mikro-orm/core'
+import { QueryOrder, wrap } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { FindCharacterDto } from '../blizzard/dto/find-character.dto'
 import { ProfileService } from '../blizzard/services/profile/profile.service'
 import { GuildCharacter } from './character.entity'
+import { RaiderIOCharacterFields } from '../raiderIO/dto/char-fields.dto'
 
 @Injectable()
 export class CharacterService {
@@ -15,6 +18,7 @@ export class CharacterService {
     @InjectRepository(GuildCharacter)
     private readonly characterRepository: EntityRepository<GuildCharacter>,
     private readonly profileService: ProfileService,
+    private readonly raiderIOService: RaiderIOService,
     private readonly config: ConfigService,
   ) {}
 
@@ -44,9 +48,18 @@ export class CharacterService {
   }
 
   public async populateGuildCharacter(guildCharacter: GuildCharacter): Promise<GuildCharacter> {
-    const [summary, media] = await Promise.allSettled([
+    const [summary, media, specs, equipment, raids, raiderIO] = await Promise.allSettled([
       this.profileService.getCharacterProfileSummary(guildCharacter.getFindCharacterDTO()),
       this.profileService.getCharacterMediaSummary(guildCharacter.getFindCharacterDTO()),
+      this.profileService.getCharacterSpecializationsSummary(guildCharacter.getFindCharacterDTO()),
+      this.profileService.getCharacterEquipmentSummary(guildCharacter.getFindCharacterDTO()),
+      this.profileService.getCharacterRaids(guildCharacter.getFindCharacterDTO()),
+      this.raiderIOService.getCharacterRaiderIO(guildCharacter.getFindCharacterDTO(), [
+        RaiderIOCharacterFields.GEAR,
+        RaiderIOCharacterFields.RAID_PROGRESSION,
+        RaiderIOCharacterFields.MYTHIC_PLUS_BEST_RUNS,
+        RaiderIOCharacterFields.MYTHIC_PLUS_SCORES_BY_CURRENT_AND_PREVIOUS_SEASON,
+      ]),
     ])
 
     if (summary.status === 'fulfilled') {
@@ -57,6 +70,22 @@ export class CharacterService {
       guildCharacter.setCharacterMediaSummary(media.value.data)
     }
 
+    if (specs.status === 'fulfilled') {
+      guildCharacter.setCharacterSpecializationsSummary(specs.value.data)
+    }
+
+    if (equipment.status === 'fulfilled') {
+      guildCharacter.setCharacterEquipmentSummary(equipment.value.data)
+    }
+
+    if (raids.status === 'fulfilled') {
+      guildCharacter.setCharacterRaidEncounterSummary(raids.value.data)
+    }
+
+    if (raiderIO.status === 'fulfilled') {
+      guildCharacter.setCharacterRaiderIO(raiderIO.value)
+    }
+
     return guildCharacter
   }
 
@@ -65,12 +94,17 @@ export class CharacterService {
    * Rank first and name alphabetized.
    * @param ranks
    */
-  findRoster(ranks: number[] = [0, 3, 5]): Promise<GuildCharacter[]> {
+  findRoster(ranks: number[] = [0, 2, 3, 5, 6]): Promise<GuildCharacter[]> {
     return this.characterRepository.find(
       { guild_rank: { $in: ranks } },
-      {
-        orderBy: { guild_rank: QueryOrder.ASC, name: QueryOrder.ASC },
-      },
+      { orderBy: { guild_rank: QueryOrder.ASC, name: QueryOrder.ASC } },
+    )
+  }
+
+  findRaidTeam(): Promise<GuildCharacter[]> {
+    return this.characterRepository.find(
+      { raid_team: true },
+      { orderBy: { guild_rank: QueryOrder.ASC, name: QueryOrder.ASC } },
     )
   }
 
@@ -101,6 +135,16 @@ export class CharacterService {
       .andWhere('realm = ?', [realm])
       .andWhere('region = ?', [region])
       .getSingleResult()
+  }
+
+  async update(id: number, updateCharacterDto: UpdateCharacterDto): Promise<GuildCharacter> {
+    const character = await this.characterRepository.findOneOrFail(id)
+
+    wrap(character).assign(updateCharacterDto)
+
+    await this.characterRepository.flush()
+
+    return character
   }
 
   async delete(findCharacterDto: FindCharacterDto): Promise<void> {

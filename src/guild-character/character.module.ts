@@ -7,6 +7,7 @@ import { GuildCharacter } from './character.entity'
 import { CharacterQueue } from './character.queue'
 import { CharacterScheduler } from './character.scheduler'
 import { CharacterService } from './character.service'
+import { RaiderIOModule } from '../raiderIO/raiderIO.module'
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CharacterService } from './character.service'
     BullModule.registerQueue({ name: 'character' }),
     BlizzardModule,
     CacheModule.register(),
+    RaiderIOModule,
   ],
   providers: [CharacterService, CharacterQueue, CharacterScheduler],
   exports: [CharacterService, CharacterQueue],
