@@ -35,7 +35,7 @@ const config: Options = {
     User,
     DiscordConfig,
   ],
-  type: 'postgresql',
+  type: 'mysql',
   host: process.env.DATABASE_HOST || '127.0.0.1',
   port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
   user: process.env.DATABASE_USERNAME || 'postgres',
