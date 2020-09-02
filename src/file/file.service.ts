@@ -1,12 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
-import fs from 'fs'
+// import fs from 'fs'
 import { EntityRepository } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { User } from '../user/user.entity'
 import { FileUpload } from './file.entity'
 import { File } from './interfaces/file.interface'
 
-const { unlink } = fs.promises
+// const { unlink } = fs.promises
 
 @Injectable()
 export class FileService {
@@ -46,7 +46,7 @@ export class FileService {
       throw new UnauthorizedException('You do not own this file')
     }
 
-    await unlink(file.path)
+    // await unlink(file.path)
 
     this.fileRepository.remove(file)
     await this.fileRepository.flush()
