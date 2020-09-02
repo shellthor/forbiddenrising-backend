@@ -11,7 +11,14 @@ import { RaidService } from './raid.service'
 @Module({
   imports: [
     MikroOrmModule.forFeature({ entities: [Raid] }),
-    BullModule.registerQueue({ name: 'raid' }),
+    BullModule.registerQueue({
+      name: 'raid',
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT, 10),
+        password: process.env.REDIS_PASSWORD,
+      },
+    }),
     HttpModule,
     CacheModule.register(),
   ],

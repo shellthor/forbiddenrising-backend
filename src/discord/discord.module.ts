@@ -44,7 +44,14 @@ import { WelcomerPlugin } from './plugins/welcomer.plugin'
     MikroOrmModule.forFeature({ entities: [DiscordConfig] }),
     DiscoveryModule,
     FormSubmissionModule,
-    BullModule.registerQueue({ name: 'discord' }),
+    BullModule.registerQueue({
+      name: 'discord',
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT, 10),
+        password: process.env.REDIS_PASSWORD,
+      },
+    }),
   ],
   providers: [
     DiscordQueue,

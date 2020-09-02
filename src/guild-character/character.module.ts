@@ -12,7 +12,14 @@ import { RaiderIOModule } from '../raiderIO/raiderIO.module'
 @Module({
   imports: [
     MikroOrmModule.forFeature({ entities: [GuildCharacter] }),
-    BullModule.registerQueue({ name: 'character' }),
+    BullModule.registerQueue({
+      name: 'character',
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT, 10),
+        password: process.env.REDIS_PASSWORD,
+      },
+    }),
     BlizzardModule,
     CacheModule.register(),
     RaiderIOModule,

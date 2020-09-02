@@ -12,7 +12,14 @@ import { FormCharacterService } from './form-character.service'
 @Module({
   imports: [
     MikroOrmModule.forFeature({ entities: [FormCharacter] }),
-    BullModule.registerQueue({ name: 'form-character' }),
+    BullModule.registerQueue({
+      name: 'form-character',
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT, 10),
+        password: process.env.REDIS_PASSWORD,
+      },
+    }),
     BlizzardModule,
     RaiderIOModule,
   ],

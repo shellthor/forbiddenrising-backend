@@ -15,8 +15,22 @@ import { SubmissionService } from './form-submission.service'
 @Module({
   imports: [
     MikroOrmModule.forFeature({ entities: [FormSubmission, FormQuestion] }),
-    BullModule.registerQueue({ name: 'form' }),
-    BullModule.registerQueue({ name: 'discord' }),
+    BullModule.registerQueue({
+      name: 'form',
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT, 10),
+        password: process.env.REDIS_PASSWORD,
+      },
+    }),
+    BullModule.registerQueue({
+      name: 'discord',
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT, 10),
+        password: process.env.REDIS_PASSWORD,
+      },
+    }),
     HttpModule,
     BlizzardModule,
     RaiderIOModule,
