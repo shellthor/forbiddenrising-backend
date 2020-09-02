@@ -14,7 +14,9 @@ import {
 } from '@nestjs/common'
 import { AnyFilesInterceptor } from '@nestjs/platform-express'
 import { AccessControl } from 'accesscontrol'
-import multer from 'multer'
+import * as multer from 'multer'
+import * as AWS from 'aws-sdk'
+import * as multerS3 from 'multer-s3'
 import { FileUpload } from 'src/file/file.entity'
 import { Auth } from '../auth/decorators/auth.decorator'
 import { InjectAccessControl } from '../auth/decorators/inject-access-control.decorator'
@@ -32,6 +34,13 @@ import { FormSubmissionStatus } from './enums/form-submission-status.enum'
 import { FormSubmission } from './form-submission.entity'
 import { SubmissionService } from './form-submission.service'
 import { CreateSubmissionPipe } from './pipes/create-submission.pipe'
+
+const AWS_S3_BUCKET_NAME = process.env.AWS_S3_BUCKET_NAME
+const s3 = new AWS.S3()
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+})
 
 @Controller('submission')
 export class SubmissionController {
@@ -55,11 +64,11 @@ export class SubmissionController {
   @Post('upload')
   @UseInterceptors(
     AnyFilesInterceptor({
-      storage: multer.diskStorage({
-        destination: function (req, file, cb) {
-          cb(null, 'uploads/applications/')
-        },
-        filename: function (req, file, cb) {
+      storage: multerS3({
+        s3: s3,
+        bucket: AWS_S3_BUCKET_NAME,
+        acl: 'public-read',
+        key: function (req, file, cb) {
           cb(null, Date.now() + '-' + file.originalname)
         },
       }),
