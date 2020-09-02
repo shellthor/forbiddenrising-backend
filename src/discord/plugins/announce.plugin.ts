@@ -8,7 +8,7 @@ import { MessageEmbed } from 'discord.js'
 @Plugin('Announcements')
 export class AnnouncePlugin extends DiscordPlugin {
   @CommandGroup('announce')
-  private group() {}
+  private group() {} // eslint-disable-line @typescript-eslint/no-empty-function
 
   @Command({
     name: 'welcome',

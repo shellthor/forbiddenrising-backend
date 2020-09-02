@@ -42,7 +42,7 @@ export class CharacterService {
       throw new BadRequestException(`Below min level: ${this.minCharacterLevel}`)
     }
 
-    await this.characterRepository.persist(guildCharacter, true)
+    await this.characterRepository.persist(guildCharacter)
 
     return guildCharacter
   }
@@ -147,9 +147,12 @@ export class CharacterService {
     return character
   }
 
-  async delete(findCharacterDto: FindCharacterDto): Promise<void> {
+  async delete(findCharacterDto: FindCharacterDto): Promise<GuildCharacter> {
     const character = await this.characterRepository.findOneOrFail(findCharacterDto)
 
-    return this.characterRepository.remove(character)
+    await this.characterRepository.remove(character)
+    await this.characterRepository.flush()
+
+    return character
   }
 }

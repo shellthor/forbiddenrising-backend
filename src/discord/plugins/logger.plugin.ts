@@ -26,7 +26,7 @@ export class LoggerPlugin extends DiscordPlugin {
   }
 
   @CommandGroup({ name: 'logger', description: 'Moderation logger commands' })
-  log() {}
+  log() {} // eslint-disable-line @typescript-eslint/no-empty-function
 
   @Command({
     name: 'channel',

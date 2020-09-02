@@ -15,7 +15,7 @@ export class SettingsPlugin {
   }
 
   @CommandGroup({ name: 'set', description: 'Configure bot settings.' })
-  set() {}
+  set() {} // eslint-disable-line @typescript-eslint/no-empty-function
 
   @Command({
     name: 'embedcolor',

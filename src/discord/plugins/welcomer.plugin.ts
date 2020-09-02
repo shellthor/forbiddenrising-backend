@@ -46,7 +46,7 @@ export class WelcomerPlugin extends DiscordPlugin {
   }
 
   @CommandGroup({ name: 'welcome' })
-  welcome() {}
+  welcome() {} // eslint-disable-line @typescript-eslint/no-empty-function
 
   @Command({
     name: 'channel',

@@ -73,7 +73,7 @@ export class CharacterQueue {
 
             if (status.data.is_valid === false || status.data.id !== guildCharacter.id) {
               results.deleted++
-              return this.em.remove(GuildCharacter, guildCharacter)
+              return this.em.remove(guildCharacter)
             }
 
             guildCharacter.last_modified = status.headers['last-modified']
@@ -92,7 +92,7 @@ export class CharacterQueue {
             }
 
             if (error.getStatus() === 404) {
-              this.em.remove(GuildCharacter, guildCharacter)
+              this.em.remove(guildCharacter)
               return
             }
           }
@@ -122,7 +122,7 @@ export class CharacterQueue {
 
     const names = notInGuild.map(m => m.name)
 
-    this.em.remove(GuildCharacter, notInGuild)
+    this.em.remove(notInGuild)
 
     await this.em.flush()
 

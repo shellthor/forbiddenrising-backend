@@ -10,7 +10,8 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true
+    "incremental": true,
+    "skipLibCheck": true
   },
   "include": ["src", "config/types/enum-array.type.ts", "config/types/decimal.type.ts"],
   "exclude": ["node_modules", "dist", "uploads"]
