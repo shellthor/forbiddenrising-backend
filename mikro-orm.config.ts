@@ -1,6 +1,5 @@
 import { Options } from '@mikro-orm/core'
 import { NotFoundException } from '@nestjs/common'
-import dotenv from 'dotenv'
 import { Article } from './src/article/article.entity'
 import { BlizzardAsset } from './src/blizzard-asset/blizzard-asset.entity'
 import { DiscordConfig } from './src/discord/discord-plugin.entity'
@@ -15,8 +14,6 @@ import { GuildCharacter } from './src/guild-character/character.entity'
 import { Raid } from './src/raid/raid.entity'
 import { Slide } from './src/slide/slide.entity'
 import { User } from './src/user/user.entity'
-
-dotenv.config()
 
 const config: Options = {
   entities: [
