@@ -5,7 +5,7 @@ import { SentryModule } from '@ntegral/nestjs-sentry'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 
 import * as Joi from 'joi'
-import MikroOrmConfig from '../mikro-orm.config'
+import MikroOrmConfig from './mikro-orm.config'
 
 import { ArticleModule } from './article/article.module'
 import { BlizzardModule } from './blizzard/blizzard.module'

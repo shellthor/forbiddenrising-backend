@@ -1,5 +1,5 @@
 import { Entity, Enum, PrimaryKey, Property, WrappedEntity } from '@mikro-orm/core'
-import { DecimalType } from '../../config/types/decimal.type'
+import { DecimalType } from '../config/types/decimal.type'
 import { Expansion } from './enums/expansion.enum'
 
 @Entity()

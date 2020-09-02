@@ -6,13 +6,10 @@ import {
   ForbiddenException,
   Injectable,
   Logger,
-  OnModuleInit,
   UnauthorizedException,
 } from '@nestjs/common'
 import { Queue } from 'bull'
-import fs from 'fs'
 import { InjectRepository } from '@mikro-orm/nestjs'
-import path from 'path'
 import { FileService } from '../file/file.service'
 import { FormCharacterService } from '../form-character/form-character.service'
 import { Form } from '../form/form.entity'
@@ -22,7 +19,7 @@ import { FormSubmissionStatus } from './enums/form-submission-status.enum'
 import { FormSubmission } from './form-submission.entity'
 
 @Injectable()
-export class SubmissionService implements OnModuleInit {
+export class SubmissionService {
   private readonly logger = new Logger(SubmissionService.name)
 
   constructor(
@@ -34,20 +31,6 @@ export class SubmissionService implements OnModuleInit {
     @InjectQueue('form') private readonly formQueue: Queue,
     @InjectQueue('discord') private readonly discordQueue: Queue,
   ) {}
-
-  onModuleInit(): void {
-    const uploadPath = path.join(process.cwd(), 'uploads', 'applications')
-
-    fs.access(uploadPath, error => {
-      if (error) {
-        this.logger.log(`Creating upload directory: ${uploadPath}`)
-
-        fs.mkdir(uploadPath, { recursive: true }, error => {
-          if (error) throw error
-        })
-      }
-    })
-  }
 
   /**
    * Creates a new form submission for a user with associated

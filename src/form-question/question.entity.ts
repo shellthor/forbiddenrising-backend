@@ -1,6 +1,6 @@
 import { BaseEntity, Entity, Enum, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core'
 import { v4 } from 'uuid'
-import { EnumArray } from '../../config/types/enum-array.type'
+import { EnumArray } from '../config/types/enum-array.type'
 import { Form } from '../form/form.entity'
 import { FieldType } from './enums/field-type.enum'
 import { FileTypes } from './enums/file-types.enum'

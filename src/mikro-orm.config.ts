@@ -1,19 +1,19 @@
 import { Options } from '@mikro-orm/core'
 import { NotFoundException } from '@nestjs/common'
-import { Article } from './src/article/article.entity'
-import { BlizzardAsset } from './src/blizzard-asset/blizzard-asset.entity'
-import { DiscordConfig } from './src/discord/discord-plugin.entity'
-import { FileUpload } from './src/file/file.entity'
-import { FormCharacter } from './src/form-character/form-character.entity'
-import { FormComment } from './src/form-comment/form-comment.entity'
-import { FormQuestion } from './src/form-question/question.entity'
-import { FormSubmission } from './src/form-submission/form-submission.entity'
-import { Form } from './src/form/form.entity'
-import { Character } from './src/guild-character/character.base.entity'
-import { GuildCharacter } from './src/guild-character/character.entity'
-import { Raid } from './src/raid/raid.entity'
-import { Slide } from './src/slide/slide.entity'
-import { User } from './src/user/user.entity'
+import { Article } from './article/article.entity'
+import { BlizzardAsset } from './blizzard-asset/blizzard-asset.entity'
+import { DiscordConfig } from './discord/discord-plugin.entity'
+import { FileUpload } from './file/file.entity'
+import { FormCharacter } from './form-character/form-character.entity'
+import { FormComment } from './form-comment/form-comment.entity'
+import { FormQuestion } from './form-question/question.entity'
+import { FormSubmission } from './form-submission/form-submission.entity'
+import { Form } from './form/form.entity'
+import { Character } from './guild-character/character.base.entity'
+import { GuildCharacter } from './guild-character/character.entity'
+import { Raid } from './raid/raid.entity'
+import { Slide } from './slide/slide.entity'
+import { User } from './user/user.entity'
 
 const config: Options = {
   entities: [
@@ -52,6 +52,13 @@ const config: Options = {
   // debug: process.env.NODE_ENV === 'development',
   strict: true,
   pool: { min: 0, max: 10 },
+  driverOptions: {
+    connection: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
+  },
   findOneOrFailHandler: () => {
     return new NotFoundException()
   },

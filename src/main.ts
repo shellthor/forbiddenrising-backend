@@ -3,8 +3,8 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { NestFactory } from '@nestjs/core'
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-import helmet from 'helmet'
-import compression from 'compression'
+import * as helmet from 'helmet'
+import * as compression from 'compression'
 
 import { AppModule } from './app.module'
 
