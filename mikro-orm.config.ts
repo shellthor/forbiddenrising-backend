@@ -35,14 +35,26 @@ const config: Options = {
     User,
     DiscordConfig,
   ],
-  type: 'mysql',
-  host: process.env.DATABASE_HOST || '127.0.0.1',
-  port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
-  user: process.env.DATABASE_USERNAME || 'postgres',
-  password: process.env.DATABASE_PASSWORD || 'postgres',
-  dbName: process.env.DATABASE_NAME || 'postgres',
-  debug: process.env.NODE_ENV === 'development',
+  migrations: {
+    tableName: 'mikro_orm_migrations', // migrations table name
+    path: process.cwd() + '/migrations', // path to folder with migration files
+    pattern: /^[\w-]+\d+\.ts$/, // how to match migration files
+    transactional: true, // run each migration inside transaction
+    disableForeignKeys: true, // try to disable foreign_key_checks (or equivalent)
+    allOrNothing: true, // run all migrations in current batch in master transaction
+    emit: 'ts', // migration generation mode
+  },
+  type: 'postgresql',
+  clientUrl: process.env.DATABASE_URL,
+  multipleStatements: true,
+  // host: process.env.DATABASE_HOST || '127.0.0.1',
+  // port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
+  // user: process.env.DATABASE_USERNAME || 'postgres',
+  // password: process.env.DATABASE_PASSWORD || 'postgres',
+  // dbName: process.env.DATABASE_NAME || 'postgres',
+  // debug: process.env.NODE_ENV === 'development',
   strict: true,
+  pool: { min: 0, max: 10 },
   findOneOrFailHandler: () => {
     return new NotFoundException()
   },
