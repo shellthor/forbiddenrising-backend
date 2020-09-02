@@ -3978,7 +3978,7 @@ escape-string-regexp@^2.0.0:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz#a30304e99daa32e23b2fd20f51babd07cffca344"
   integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
 
-escaya@^0.0.23:
+escaya@^0.0.23, escaya@^0.0.28:
   version "0.0.28"
   resolved "https://registry.yarnpkg.com/escaya/-/escaya-0.0.28.tgz#98be9bc9475f1ee15e6192e932f798b1ec984a77"
   integrity sha512-K6J5FHPMYFXTbE3IajcS6Jwss/0AiU+oSBXcC3ECqM1PF16TmuEn1p23gHAE6I/ewnjvbAFAEi1SLdbIAYpMwg==

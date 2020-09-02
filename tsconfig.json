@@ -4,15 +4,15 @@
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
     "experimentalDecorators": true,
-    "target": "ESNext",
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "lib": ["ESNext"]
   },
-  "include": ["src", "config/types/enum-array.type.ts", "config/types/decimal.type.ts"],
-  "exclude": ["node_modules", "dist", "uploads"]
+  "include": ["src/**/*", "config/**/*"]
 }
