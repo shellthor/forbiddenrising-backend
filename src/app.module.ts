@@ -3,6 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { PassportModule } from '@nestjs/passport'
 import { SentryModule } from '@ntegral/nestjs-sentry'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
+import { TerminusModule } from '@nestjs/terminus'
+import { MulterExtendedModule } from 'nestjs-multer-extended'
+import { StatusMonitorModule } from 'nest-status-monitor'
 
 import * as Joi from 'joi'
 import MikroOrmConfig from './mikro-orm.config'
@@ -19,6 +22,7 @@ import { RaidModule } from './raid/raid.module'
 import { RaiderIOModule } from './raiderIO/raiderIO.module'
 import { UserModule } from './user/user.module'
 import { SlideModule } from './slide/slide.module'
+import { HealthController } from './health/health.controller'
 
 @Module({
   imports: [
@@ -40,6 +44,13 @@ import { SlideModule } from './slide/slide.module'
         DISCORD_CALLBACK: Joi.string().default('http://localhost:3000/callback'),
         BASE_URL: Joi.string().default('http://localhost:3000/'),
         GLOBAL_PREFIX: Joi.string().default('api'),
+        DATABASE_URL: Joi.string().required(),
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PORT: Joi.number().required(),
+        REDIS_PASSWORD: Joi.string().required(),
+        AWS_S3_BUCKET_NAME: Joi.string().required().default('forbiddenrising'),
+        AWS_ACCESS_KEY_ID: Joi.string().required(),
+        AWS_SECRET_ACCESS_KEY: Joi.string().required(),
       }),
       envFilePath: ['.env', '.local.env'],
     }),
@@ -67,6 +78,48 @@ import { SlideModule } from './slide/slide.module'
       }),
       inject: [ConfigService],
     }),
+    TerminusModule,
+    MulterExtendedModule.registerAsync({
+      useFactory: (config: ConfigService) => {
+        return {
+          accessKeyId: config.get('AWS_ACCESS_KEY_ID'),
+          secretAccessKey: config.get('AWS_SECRET_ACCESS_KEY'),
+          region: 'us-east-1',
+          bucket: config.get('AWS_S3_BUCKET_NAME'),
+          basePath: 'uploads/applications',
+        }
+      },
+      inject: [ConfigService],
+    }),
+    StatusMonitorModule.setUp({
+      pageTitle: 'Nest.js Monitoring Page',
+      port: 3000,
+      path: '/status',
+      ignoreStartsWith: '/health/alive',
+      spans: [
+        {
+          interval: 1, // Every second
+          retention: 60, // Keep 60 datapoints in memory
+        },
+        {
+          interval: 5, // Every 5 seconds
+          retention: 60,
+        },
+        {
+          interval: 15, // Every 15 seconds
+          retention: 60,
+        },
+      ],
+      chartVisibility: {
+        cpu: true,
+        mem: true,
+        load: true,
+        responseTime: true,
+        rps: true,
+        statusCodes: true,
+      },
+      healthChecks: [],
+    }),
     UserModule,
     AuthModule,
     SlideModule,
@@ -79,5 +132,6 @@ import { SlideModule } from './slide/slide.module'
     CharacterModule,
     RaiderIOModule,
   ],
+  controllers: [HealthController],
 })
 export class AppModule {}

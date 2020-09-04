@@ -143,10 +143,11 @@ export class CharacterQueue {
     if (job.name === 'update-guild-members') {
       const statuses = []
 
-      Object.keys(results).forEach(r => {
-        if (r === 'processed' || r === 'total' || results[r] === 0) return
+      Object.keys(results).forEach(result => {
+        this.logger.debug(result)
+        if (result === 'processed' || result === 'total' || results[result] === 0) return
 
-        statuses.push(`${results[r]} ${r.charAt(0).toUpperCase() + r.slice(1)}`)
+        statuses.push(`${results[result]} ${result.charAt(0).toUpperCase() + result.slice(1)}`)
       })
 
       this.logger.log(

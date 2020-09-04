@@ -8,15 +8,14 @@ import {
   Patch,
   Post,
   Query,
-  UploadedFiles,
+  UploadedFile,
   UseInterceptors,
   UsePipes,
+  Logger,
 } from '@nestjs/common'
-import { AnyFilesInterceptor } from '@nestjs/platform-express'
+import { AmazonS3FileInterceptor } from 'nestjs-multer-extended'
 import { AccessControl } from 'accesscontrol'
-import * as multer from 'multer'
-import * as AWS from 'aws-sdk'
-import * as multerS3 from 'multer-s3'
+
 import { FileUpload } from 'src/file/file.entity'
 import { Auth } from '../auth/decorators/auth.decorator'
 import { InjectAccessControl } from '../auth/decorators/inject-access-control.decorator'
@@ -35,15 +34,9 @@ import { FormSubmission } from './form-submission.entity'
 import { SubmissionService } from './form-submission.service'
 import { CreateSubmissionPipe } from './pipes/create-submission.pipe'
 
-const AWS_S3_BUCKET_NAME = process.env.AWS_S3_BUCKET_NAME
-const s3 = new AWS.S3()
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-})
-
 @Controller('submission')
 export class SubmissionController {
+  private readonly logger = new Logger(SubmissionController.name)
   constructor(
     private readonly fileService: FileService,
     private readonly submissionService: SubmissionService,
@@ -62,24 +55,13 @@ export class SubmissionController {
 
   @Auth()
   @Post('upload')
-  @UseInterceptors(
-    AnyFilesInterceptor({
-      storage: multerS3({
-        s3: s3,
-        bucket: AWS_S3_BUCKET_NAME,
-        acl: 'public-read',
-        key: function (req, file, cb) {
-          cb(null, Date.now() + '-' + file.originalname)
-        },
-      }),
-    }),
-  )
-  uploadFiles(
-    @Usr() user: User,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    @UploadedFiles() files: any,
-  ): Promise<FileUpload[]> {
-    return this.fileService.create(files, user)
+  @UseInterceptors(AmazonS3FileInterceptor('file'))
+  uploadFiles(@UploadedFile() file, @Usr() user: User): Promise<FileUpload> {
+    for (const [key, value] of Object.entries(file)) {
+      this.logger.debug(`${key}`)
+    }
+
+    return this.fileService.create(file, user)
   }
 
   @Auth()

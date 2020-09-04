@@ -1,4 +1,3 @@
-require('newrelic')
 import { ConfigService } from '@nestjs/config'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { NestFactory } from '@nestjs/core'
@@ -36,6 +35,7 @@ async function bootstrap(): Promise<void> {
 
   app.use(helmet())
   app.use(compression())
+  app.enableShutdownHooks()
 
   // const globalPrefix = config.get<string>('GLOBAL_PREFIX')
   // app.setGlobalPrefix(globalPrefix)
