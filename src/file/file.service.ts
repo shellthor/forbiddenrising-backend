@@ -18,7 +18,9 @@ export class FileService {
     fileEntity.filename = Date.now() + '-' + file.originalname
     fileEntity.mimetype = file.mimetype
     fileEntity.path = 'uploads/applications'
+    fileEntity.encoding = file.encoding
     fileEntity.size = file.size
+    fileEntity.file = file.buffer
 
     if (user) {
       fileEntity.author = user

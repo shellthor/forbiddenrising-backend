@@ -22,6 +22,12 @@ export class FileUpload {
   @Property()
   immune = false
 
+  @Property()
+  encoding!: string
+
+  @Property({ type: 'bytea' })
+  file!: Buffer
+
   /**
    * Relationships
    */

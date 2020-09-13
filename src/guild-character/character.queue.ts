@@ -144,7 +144,7 @@ export class CharacterQueue {
       const statuses = []
 
       Object.keys(results).forEach(result => {
-        this.logger.debug(result)
+        this.logger.debug(results[result])
         if (result === 'processed' || result === 'total' || results[result] === 0) return
 
         statuses.push(`${results[result]} ${result.charAt(0).toUpperCase() + result.slice(1)}`)
