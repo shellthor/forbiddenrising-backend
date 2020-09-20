@@ -1,7 +1,7 @@
 import { HttpService, Injectable, Logger, UnauthorizedException } from '@nestjs/common'
 import { MessageEmbed, TextChannel } from 'discord.js'
 import { chunk, isEqual, partition } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { sleep } from '../../app.utils'
 import { PluginConfig } from '../discord-config.class'
 import { Context } from '../discord.context'
@@ -177,10 +177,7 @@ export class WarcraftLogsPlugin extends DiscordPlugin {
       if (!channel) continue
 
       const reports = (await this.getReports(key)).slice(0, 5)
-      const [active, inactive] = partition(
-        reports,
-        r => moment(Date.now()).diff(r.end, 'hours') < 1,
-      )
+      const [active, inactive] = partition(reports, r => dayjs(Date.now()).diff(r.end, 'hour') < 1)
       this.hasActiveLog = active.length > 0
 
       // Send final embed to watched reports that are now outdated, then remove them.

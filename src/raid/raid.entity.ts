@@ -1,10 +1,11 @@
-import { Entity, Enum, PrimaryKey, Property, WrappedEntity } from '@mikro-orm/core'
+import { Entity, Enum, PrimaryKey, Property, BaseEntity } from '@mikro-orm/core'
 import { DecimalType } from '../config/types/decimal.type'
 import { Expansion } from './enums/expansion.enum'
 
 @Entity()
-export class Raid {
+export class Raid extends BaseEntity<Raid, 'id'> {
   constructor(slug: string) {
+    super()
     this.slug = slug
   }
 
@@ -68,6 +69,3 @@ export class Raid {
   @Property({ onUpdate: () => new Date() })
   updatedAt: Date = new Date()
 }
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Raid extends WrappedEntity<Raid, 'id'> {}

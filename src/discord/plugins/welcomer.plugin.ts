@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { Client, Guild, GuildMember, MessageEmbed, TextChannel } from 'discord.js'
 import { sample } from 'lodash'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { FormSubmissionStatus } from '../../form-submission/enums/form-submission-status.enum'
 import { SubmissionService } from '../../form-submission/form-submission.service'
 import { PluginConfig } from '../discord-config.class'
@@ -184,8 +184,8 @@ export class WelcomerPlugin extends DiscordPlugin {
   }
 
   private isADayAgo(date: Date) {
-    const yesterday = moment().subtract(1, 'day')
+    const yesterday = dayjs().subtract(1, 'day')
 
-    return moment(date).isBefore(yesterday)
+    return dayjs(date).isBefore(yesterday)
   }
 }

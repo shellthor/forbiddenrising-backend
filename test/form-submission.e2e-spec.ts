@@ -262,7 +262,7 @@ describe('Form Submissions', () => {
     test('should accept images in submissions', async () => {
       const submission = await em.findOneOrFail(FormSubmission, { id: 1 })
 
-      em.remove(FormSubmission, submission)
+      em.remove(FormSubmission)
 
       await em.flush()
 

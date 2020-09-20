@@ -1,4 +1,5 @@
 import { Options } from '@mikro-orm/core'
+import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import { NotFoundException } from '@nestjs/common'
 import { Article } from './article/article.entity'
 import { BlizzardAsset } from './blizzard-asset/blizzard-asset.entity'
@@ -16,6 +17,7 @@ import { Slide } from './slide/slide.entity'
 import { User } from './user/user.entity'
 
 const config: Options = {
+  highlighter: new SqlHighlighter(),
   entities: [
     Article,
     BlizzardAsset,
