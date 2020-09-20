@@ -12,12 +12,12 @@ export class CharacterScheduler extends NestSchedule {
     super()
   }
 
-  @Cron('0 */2 * * *')
+  // @Cron('0 */2 * * *')
   updateMembers(): void {
     this.queue.add('update-guild-members', { attempts: 1 })
   }
 
-  @Cron('30 */2 * * *')
+  // @Cron('30 */2 * * *')
   addRemove(): void {
     this.queue.add('add-remove-members', { attempts: 1 })
   }

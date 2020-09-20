@@ -12,7 +12,7 @@ export class FormCharacterScheduler extends NestSchedule {
     super()
   }
 
-  @Cron('0 1-23/2 * * *')
+  // @Cron('0 1-23/2 * * *')
   updateFormCharacters(): void {
     this.queue.add('character-update', { attempts: 1 })
   }
