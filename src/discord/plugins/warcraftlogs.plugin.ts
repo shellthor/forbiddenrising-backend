@@ -56,7 +56,7 @@ export class WarcraftLogsPlugin extends DiscordPlugin {
   }
 
   @CommandGroup({ name: 'wcl', description: 'WarcraftLogs related commands.' })
-  wcl() {}
+  wcl() {} // eslint-disable-line @typescript-eslint/no-empty-function
 
   @Command({
     name: 'api',
