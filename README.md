@@ -6,6 +6,7 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -13,12 +14,10 @@
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/shellthor/forbiddenrising-api">
+  <a href="https://github.com/shellthor/forbiddenrising-backend">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -27,54 +26,50 @@
   <p align="center">
     This is the codebase for the Forbidden Rising guild webapp.
     <br />
-    <a href="https://github.com/shellthor/forbiddenrising-api"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/shellthor/forbiddenrising-backend"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/shellthor/forbiddenrising-api">View Demo</a>
+    <a href="https://github.com/shellthor/forbiddenrising-backend">View Demo</a>
     ·
-    <a href="https://github.com/shellthor/forbiddenrising-api/issues">Report Bug</a>
+    <a href="https://github.com/shellthor/forbiddenrising-backend/issues">Report Bug</a>
     ·
-    <a href="https://github.com/shellthor/forbiddenrising-api/issues">Request Feature</a>
+    <a href="https://github.com/shellthor/forbiddenrising-backend/issues">Request Feature</a>
   </p>
 </p>
 
-
-
 <!-- TABLE OF CONTENTS -->
+
 ## Table of Contents
 
-* [About the Project](#about-the-project)
-  * [Built With](#built-with)
-* [Getting Started](#getting-started)
-  * [Prerequisites](#prerequisites)
-  * [Installation](#installation)
-* [Usage](#usage)
-* [Roadmap](#roadmap)
-* [Contributing](#contributing)
-* [License](#license)
-* [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
-
-
+- [About the Project](#about-the-project)
+  - [Built With](#built-with)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgements](#acknowledgements)
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 Here's a blank template to get started:
 **To avoid retyping too much info. Do a search and replace with your text editor for the following:**
-`shellthor`, `forbiddenrising-api`, `@forbiddenrising`, `info@forbiddenrising.wtf`
-
+`shellthor`, `forbiddenrising-backend`, `@forbiddenrising`, `info@forbiddenrising.wtf`
 
 ### Built With
 
-* [NestJS](https://nestjs.com/)
-* [Typescript](https://www.typescriptlang.org/)
-
-
+- [NestJS](https://nestjs.com/)
+- [Typescript](https://www.typescriptlang.org/)
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 To get a local copy up and running follow these simple steps.
@@ -82,7 +77,9 @@ To get a local copy up and running follow these simple steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+
+- npm
+
 ```sh
 npm install npm@latest -g
 ```
@@ -90,33 +87,33 @@ npm install npm@latest -g
 ### Installation
 
 1. Clone the repo
+
 ```sh
-git clone https://github.com/shellthor/forbiddenrising-api.git
+git clone https://github.com/shellthor/forbiddenrising-backend.git
 ```
+
 2. Install NPM packages
+
 ```sh
 npm install
 ```
 
-
-
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
-
-
 <!-- ROADMAP -->
+
 ## Roadmap
 
-See the [open issues](https://github.com/shellthor/forbiddenrising-api/issues) for a list of proposed features (and known issues).
-
-
+See the [open issues](https://github.com/shellthor/forbiddenrising-backend/issues) for a list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -127,37 +124,31 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-
-
 <!-- CONTACT -->
+
 ## Contact
 
 Shellthor - [@forbiddenrising](https://twitter.com/@forbiddenrising) - info@forbiddenrising.wtf
 
-Project Link: [https://github.com/shellthor/forbiddenrising-api](https://github.com/shellthor/forbiddenrising-api)
-
-
+Project Link: [https://github.com/shellthor/forbiddenrising-backend](https://github.com/shellthor/forbiddenrising-backend)
 
 <!-- ACKNOWLEDGEMENTS -->
+
 ## Acknowledgements
 
-* []()
-* []()
-* []()
-
-
-
-
+- []()
+- []()
+- []()
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/shellthor/repo.svg?style=flat-square
 [contributors-url]: https://github.com/shellthor/repo/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/shellthor/repo.svg?style=flat-square
