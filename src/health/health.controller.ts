@@ -4,6 +4,7 @@ import {
   DNSHealthIndicator,
   HealthCheck,
   MemoryHealthIndicator,
+  HealthCheckResult,
 } from '@nestjs/terminus'
 
 @Controller('health')
@@ -16,9 +17,9 @@ export class HealthController {
 
   @Get()
   @HealthCheck()
-  check() {
+  check(): Promise<HealthCheckResult> {
     return this.health.check([
-      () => this.dns.pingCheck('nestjs-docs', 'https://docs.nestjs.com'),
+      () => this.dns.pingCheck('google', 'https://google.com'),
       () => this.memory.checkHeap('memory_heap', 200 * 1024 * 1024),
     ])
   }
