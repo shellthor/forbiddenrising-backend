@@ -57,7 +57,7 @@
     "@ntegral/nestjs-sentry": "^1.0.4",
     "accesscontrol": "^2.2.1",
     "aws-sdk": "^2.778.0",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "bull": "^3.18.0",
     "cache-manager": "^3.4.0",
     "class-transformer": "^0.3.1",
